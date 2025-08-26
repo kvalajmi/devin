@@ -115,7 +115,6 @@ export const ClientDataProvider: React.FC<ClientDataProviderProps> = ({
   const deletePayment = (id: number) => {
     setPayments(prev => prev.filter(payment => payment.id !== id))
     onNotification('success', '✅ تم حذف الدفعة بنجاح!')
-    alert('✅ تم حذف الدفعة بنجاح')
   }
 
   // دوال إدارة المصروفات
@@ -140,7 +139,6 @@ export const ClientDataProvider: React.FC<ClientDataProviderProps> = ({
   const deleteExpense = (id: number) => {
     setExpenses(prev => prev.filter(expense => expense.id !== id))
     onNotification('success', '✅ تم حذف المصروف بنجاح!')
-    alert('✅ تم حذف المصروف بنجاح')
   }
 
   // دوال إدارة أتعاب المحامي
@@ -165,7 +163,6 @@ export const ClientDataProvider: React.FC<ClientDataProviderProps> = ({
   const deleteLawyerFee = (id: number) => {
     setLawyerFees(prev => prev.filter(fee => fee.id !== id))
     onNotification('success', '✅ تم حذف أتعاب المحامي بنجاح!')
-    alert('✅ تم حذف أتعاب المحامي بنجاح')
   }
 
   // الإحصائيات المحسوبة
