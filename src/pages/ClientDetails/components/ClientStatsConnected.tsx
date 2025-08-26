@@ -21,13 +21,9 @@ const ClientStatsConnected: React.FC<ClientStatsConnectedProps> = ({
 }) => {
   // استخدام البيانات من Context
   const { 
-    payments, 
-    expenses, 
-    lawyerFees, 
     totalPaid, 
     totalExpenses, 
-    totalLawyerFees, 
-    netAmount 
+    totalLawyerFees
   } = useClientData()
 
   // حساب الإحصائيات
@@ -35,14 +31,16 @@ const ClientStatsConnected: React.FC<ClientStatsConnectedProps> = ({
   const totalRemaining = totalAmount - totalPaid
   const progressPercentage = totalAmount > 0 ? (totalPaid / totalAmount) * 100 : 0
 
-  // حساب أرباح المستثمر والشريك
-  const investorProfit = (profit * investorPercentage) / 100
-  const partnerProfit = (profit * partnerPercentage) / 100
+  // حساب النسب والأرباح الجديدة
+  const profitRatioFromPaidAmount = loanAmount > 0 ? ((profit / loanAmount) * 100) * (totalPaid / totalAmount) : 0
+  const collectedProfit = totalPaid > loanAmount ? totalPaid - loanAmount : 0
+  const collectedCapital = totalPaid - collectedProfit
+  const collectedNetProfit = collectedProfit - totalExpenses - totalLawyerFees
 
-  // حساب صافي الربح بعد المصروفات
-  const netProfit = profit - totalExpenses - totalLawyerFees
-  const netInvestorProfit = (netProfit * investorPercentage) / 100
-  const netPartnerProfit = (netProfit * partnerPercentage) / 100
+  // حساب أرباح المستثمر والشريك من الربح المحصل
+  const investorCollectedProfit = (collectedNetProfit * investorPercentage) / 100
+  const partnerCollectedProfit = (collectedNetProfit * partnerPercentage) / 100
+
 
   return (
     <div className={styles.financialSummaryContainer}>
@@ -83,6 +81,22 @@ const ClientStatsConnected: React.FC<ClientStatsConnectedProps> = ({
             </div>
 
             <div className={styles.statCard}>
+              <div className={styles.statIcon}>📊</div>
+              <div className={styles.statContent}>
+                <div className={styles.statValue}>{profitRatioFromPaidAmount.toFixed(2)}%</div>
+                <div className={styles.statLabel}>نسبة الربح من المدفوع</div>
+              </div>
+            </div>
+
+            <div className={styles.statCard}>
+              <div className={styles.statIcon}>🏦</div>
+              <div className={styles.statContent}>
+                <div className={styles.statValue}>{collectedCapital.toLocaleString('en-US')} د.ك</div>
+                <div className={styles.statLabel}>رأس المال المحصل</div>
+              </div>
+            </div>
+
+            <div className={styles.statCard}>
               <div className={styles.statIcon}>💸</div>
               <div className={styles.statContent}>
                 <div className={styles.statValue}>{totalExpenses.toLocaleString('en-US')} د.ك</div>
@@ -99,10 +113,10 @@ const ClientStatsConnected: React.FC<ClientStatsConnectedProps> = ({
             </div>
 
             <div className={styles.statCard}>
-              <div className={styles.statIcon}>📊</div>
+              <div className={styles.statIcon}>💎</div>
               <div className={styles.statContent}>
-                <div className={styles.statValue}>{netAmount.toLocaleString('en-US')} د.ك</div>
-                <div className={styles.statLabel}>صافي المبلغ</div>
+                <div className={styles.statValue}>{collectedNetProfit.toLocaleString('en-US')} د.ك</div>
+                <div className={styles.statLabel}>صافي الربح المحصل</div>
               </div>
             </div>
           </div>
@@ -121,21 +135,21 @@ const ClientStatsConnected: React.FC<ClientStatsConnectedProps> = ({
             </div>
           </div>
 
-          {/* توزيع الأرباح - كروت جميلة */}
+          {/* توزيع الأرباح المحصلة - كروت منفصلة */}
           <div className={styles.statsGrid}>
             <div className={styles.statCard}>
               <div className={styles.statIcon}>👤</div>
               <div className={styles.statContent}>
-                <div className={styles.statValue}>{netInvestorProfit.toLocaleString('en-US')} د.ك</div>
-                <div className={styles.statLabel}>نصيب المستثمر ({investorPercentage}%)</div>
+                <div className={styles.statValue}>{investorCollectedProfit.toLocaleString('en-US')} د.ك</div>
+                <div className={styles.statLabel}>ربح المستثمر ({investorPercentage}%)</div>
               </div>
             </div>
 
             <div className={styles.statCard}>
               <div className={styles.statIcon}>🤝</div>
               <div className={styles.statContent}>
-                <div className={styles.statValue}>{netPartnerProfit.toLocaleString('en-US')} د.ك</div>
-                <div className={styles.statLabel}>نصيب الشريك ({partnerPercentage}%)</div>
+                <div className={styles.statValue}>{partnerCollectedProfit.toLocaleString('en-US')} د.ك</div>
+                <div className={styles.statLabel}>ربح الشريك ({partnerPercentage}%)</div>
               </div>
             </div>
           </div>

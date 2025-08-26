@@ -27,7 +27,7 @@ const ClientDataManager: React.FC<ClientDataManagerProps> = ({
       console.log('🔧 تم تحديث بيانات العميل:', updates)
     }
     
-    showNotification('success', 'تم تحديث بيانات العميل بنجاح!')
+    showNotification('success', '✅ تم تحديث بيانات العميل بنجاح!')
     setShowEditClientModal(false)
   }
 
@@ -37,7 +37,7 @@ const ClientDataManager: React.FC<ClientDataManagerProps> = ({
       console.log('🔧 تم تحديث بيانات القرض:', updates)
     }
     
-    showNotification('success', 'تم تحديث بيانات القرض بنجاح!')
+    showNotification('success', '✅ تم تحديث بيانات القرض بنجاح!')
     setShowEditLoanModal(false)
   }
 
@@ -144,11 +144,17 @@ const ClientDataManager: React.FC<ClientDataManagerProps> = ({
             </div>
             <div className={styles.infoItem}>
               <label className={styles.infoLabel}>تاريخ الاستحقاق</label>
-              <div className={styles.infoValue}>{client.dueDate || 'غير محدد'}</div>
+              <div className={styles.infoValue}>{client.pensionDate || 'غير محدد'}</div>
             </div>
             <div className={styles.infoItem}>
               <label className={styles.infoLabel}>كود المعاملة</label>
               <div className={styles.infoValue}>{client.transaction_code}</div>
+            </div>
+            <div className={styles.infoItem}>
+              <label className={styles.infoLabel}>كود القرض</label>
+              <div className={styles.infoValue}>
+                {client.loan_code ? `K ${client.loan_code}` : 'غير محدد'}
+              </div>
             </div>
           </div>
         </div>

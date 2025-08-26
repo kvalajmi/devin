@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react'
+import React, { createContext, useContext, useState, ReactNode } from 'react'
 import { Client } from '../../../types/DatabaseTypes'
 
 // أنواع البيانات
@@ -69,13 +69,11 @@ const ClientDataContext = createContext<ClientDataContextType | undefined>(undef
 // مزود السياق
 interface ClientDataProviderProps {
   children: ReactNode
-  clientId: string
   onNotification: (type: 'success' | 'error' | 'warning', message: string) => void
 }
 
 export const ClientDataProvider: React.FC<ClientDataProviderProps> = ({
   children,
-  clientId,
   onNotification
 }) => {
   // حالات البيانات
@@ -104,19 +102,20 @@ export const ClientDataProvider: React.FC<ClientDataProviderProps> = ({
       entryDateTime: new Date().toISOString()
     }
     setPayments(prev => [...prev, newPayment])
-    onNotification('success', 'تم إضافة الدفعة بنجاح!')
+    onNotification('success', '✅ تم إضافة الدفعة بنجاح!')
   }
 
   const updatePayment = (id: number, updates: Partial<Payment>) => {
     setPayments(prev => prev.map(payment => 
       payment.id === id ? { ...payment, ...updates } : payment
     ))
-    onNotification('success', 'تم تعديل الدفعة بنجاح!')
+    onNotification('success', '✅ تم تعديل الدفعة بنجاح!')
   }
 
   const deletePayment = (id: number) => {
     setPayments(prev => prev.filter(payment => payment.id !== id))
-    onNotification('success', 'تم حذف الدفعة بنجاح!')
+    onNotification('success', '✅ تم حذف الدفعة بنجاح!')
+    alert('✅ تم حذف الدفعة بنجاح')
   }
 
   // دوال إدارة المصروفات
@@ -128,19 +127,20 @@ export const ClientDataProvider: React.FC<ClientDataProviderProps> = ({
       entryDateTime: new Date().toISOString()
     }
     setExpenses(prev => [...prev, newExpense])
-    onNotification('success', 'تم إضافة المصروف بنجاح!')
+    onNotification('success', '✅ تم إضافة المصروف بنجاح!')
   }
 
   const updateExpense = (id: number, updates: Partial<Expense>) => {
     setExpenses(prev => prev.map(expense => 
       expense.id === id ? { ...expense, ...updates } : expense
     ))
-    onNotification('success', 'تم تعديل المصروف بنجاح!')
+    onNotification('success', '✅ تم تعديل المصروف بنجاح!')
   }
 
   const deleteExpense = (id: number) => {
     setExpenses(prev => prev.filter(expense => expense.id !== id))
-    onNotification('success', 'تم حذف المصروف بنجاح!')
+    onNotification('success', '✅ تم حذف المصروف بنجاح!')
+    alert('✅ تم حذف المصروف بنجاح')
   }
 
   // دوال إدارة أتعاب المحامي
@@ -152,19 +152,20 @@ export const ClientDataProvider: React.FC<ClientDataProviderProps> = ({
       entryDateTime: new Date().toISOString()
     }
     setLawyerFees(prev => [...prev, newFee])
-    onNotification('success', 'تم إضافة أتعاب المحامي بنجاح!')
+    onNotification('success', '✅ تم إضافة أتعاب المحامي بنجاح!')
   }
 
   const updateLawyerFee = (id: number, updates: Partial<LawyerFee>) => {
     setLawyerFees(prev => prev.map(fee => 
       fee.id === id ? { ...fee, ...updates } : fee
     ))
-    onNotification('success', 'تم تعديل أتعاب المحامي بنجاح!')
+    onNotification('success', '✅ تم تعديل أتعاب المحامي بنجاح!')
   }
 
   const deleteLawyerFee = (id: number) => {
     setLawyerFees(prev => prev.filter(fee => fee.id !== id))
-    onNotification('success', 'تم حذف أتعاب المحامي بنجاح!')
+    onNotification('success', '✅ تم حذف أتعاب المحامي بنجاح!')
+    alert('✅ تم حذف أتعاب المحامي بنجاح')
   }
 
   // الإحصائيات المحسوبة

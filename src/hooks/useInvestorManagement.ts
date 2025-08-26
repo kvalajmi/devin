@@ -4,7 +4,7 @@ import { useConfirmationContext } from '../components/ConfirmationProvider'
 import { createDeleteConfirm } from '../utils/confirmation-helpers'
 import { useInvestorData } from './useInvestorData'
 import { useInvestorForms } from './useInvestorForms'
-import { useInvestorAlerts } from './useInvestorAlerts'
+import { useGlobalNotifications } from './useGlobalNotifications'
 import { useInvestorStats } from './useInvestorStats'
 import { Investor } from '../pages/Investors/types'
 
@@ -20,7 +20,7 @@ export const useInvestorManagement = () => {
   // استخدام الـ hooks المتخصصة
   const { investors, isLoading, addInvestor, updateInvestor, deleteInvestor } = useInvestorData()
   const { showAddForm, showDetailsForm, selectedInvestor, toggleAddForm, openInvestorDetails, closeAllForms } = useInvestorForms()
-  const { alert, showAlert, closeAlert } = useInvestorAlerts()
+  const { showNotification } = useGlobalNotifications()
   const stats = useInvestorStats(investors)
 
   // دوال التنقل
@@ -34,44 +34,51 @@ export const useInvestorManagement = () => {
       const success = await deleteConfirm.deleteInvestor()
       if (!success) return false
 
-      return await deleteInvestor(investorId)
+      showNotification('warning', '⏳ جاري حذف المستثمر...')
+      const result = await deleteInvestor(investorId)
+      if (result) {
+        showNotification('success', '✅ تم حذف المستثمر بنجاح')
+      }
+      return result
     } catch (error) {
       console.error('خطأ في حذف المستثمر:', error)
-      showAlert('error', 'حدث خطأ أثناء حذف المستثمر')
+      showNotification('error', '❌ حدث خطأ أثناء حذف المستثمر')
       return false
     }
-  }, [deleteConfirm, deleteInvestor, showAlert])
+  }, [deleteConfirm, deleteInvestor, showNotification])
 
   // دالة إضافة مستثمر مع معالجة الأخطاء
   const handleAddInvestor = useCallback(async (newInvestorData: Omit<Investor, 'id'>) => {
     try {
+      showNotification('warning', 'جاري إضافة المستثمر...')
       const success = await addInvestor(newInvestorData)
       if (success) {
-        showAlert('success', 'تم إضافة المستثمر الجديد بنجاح')
+        showNotification('success', '✅ تم إضافة المستثمر الجديد بنجاح')
         closeAllForms()
       }
       return success
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'حدث خطأ أثناء إضافة المستثمر'
-      showAlert('error', errorMessage)
+      showNotification('error', `❌ ${errorMessage}`)
       return false
     }
-  }, [addInvestor, showAlert, closeAllForms])
+  }, [addInvestor, showNotification, closeAllForms])
 
   // دالة تحديث مستثمر مع معالجة الأخطاء
   const handleUpdateInvestor = useCallback(async (investorId: number, updates: Partial<Investor>) => {
     try {
+      showNotification('warning', '⏳ جاري تحديث البيانات...')
       const success = await updateInvestor(investorId, updates)
       if (success) {
-        showAlert('success', 'تم تحديث بيانات المستثمر بنجاح')
+        showNotification('success', '✅ تم تحديث بيانات المستثمر بنجاح')
       }
       return success
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'حدث خطأ أثناء تحديث بيانات المستثمر'
-      showAlert('error', errorMessage)
+      showNotification('error', `❌ ${errorMessage}`)
       return false
     }
-  }, [updateInvestor, showAlert])
+  }, [updateInvestor, showNotification])
 
   return {
     // البيانات
@@ -92,8 +99,7 @@ export const useInvestorManagement = () => {
     toggleAddForm,
 
     // إدارة التنبيهات
-    showAlert,
-    closeAlert,
+    showNotification,
 
     // إحصائيات
     stats
