@@ -3,25 +3,16 @@
 
 // استيراد الواجهات المقسمة
 import { DatabaseAPI } from './api/DatabaseAPI'
-import { ClientsAPI } from './api/ClientsAPI'
-import { InvestorsAPI } from './api/InvestorsAPI'
-import { PaymentsAPI } from './api/PaymentsAPI'
-import { ExpensesAPI } from './api/ExpensesAPI'
-import { SystemAPI } from './api/SystemAPI'
 
-// استيراد الخدمات الأساسية للتصدير
-import { DatabaseConnection } from '../services/DatabaseConnection'
-import { SystemHealthService } from '../services/system/SystemHealthService'
-import { DataCleanupService } from '../services/system/DataCleanupService'
-import { ClientsService } from '../services/ClientsService'
-import { InvestorsService } from '../services/InvestorsService'
-import { PaymentsService } from '../services/PaymentsService'
-import { ExpensesService } from '../services/ExpensesService'
+import { SupabaseDatabaseClients } from './supabase-clients'
+import { SupabaseDatabaseInvestors } from './supabase-investors'
+import { SupabaseDatabasePayments } from './supabase-payments'
+import { SupabaseDatabaseExpenses } from './supabase-expenses'
+import { SupabaseDatabaseSystem } from './supabase-system'
 
 /**
- * فئة موحدة لإدارة قاعدة البيانات المحسّنة
- * تعمل كواجهة للواجهات المتخصصة المنفصلة
- * تم تحسينها لتوفير أداء أفضل وقابلية صيانة محسّنة
+ * فئة موحدة لإدارة قاعدة البيانات المحسّنة - واجهة موحدة
+ * تم تقسيمها حسب القاعدة الذهبية (200 سطر كحد أقصى)
  */
 export class SupabaseDatabase {
   // ===== إدارة الاتصال =====
@@ -35,202 +26,202 @@ export class SupabaseDatabase {
 
   // ===== عمليات العملاء =====
   static async getClients(): Promise<any[]> {
-    return ClientsAPI.getClients()
+    return SupabaseDatabaseClients.getClients()
   }
 
   static async addClient(client: any): Promise<number | null> {
-    return ClientsAPI.addClient(client)
+    return SupabaseDatabaseClients.addClient(client)
   }
 
   static async updateClient(clientId: number, updates: any): Promise<boolean> {
-    return ClientsAPI.updateClient(clientId, updates)
+    return SupabaseDatabaseClients.updateClient(clientId, updates)
   }
 
   static async deleteClient(clientId: number): Promise<boolean> {
-    return ClientsAPI.deleteClient(clientId)
+    return SupabaseDatabaseClients.deleteClient(clientId)
   }
 
   static async searchClients(searchTerm: string): Promise<any[]> {
-    return ClientsAPI.searchClients(searchTerm)
+    return SupabaseDatabaseClients.searchClients(searchTerm)
   }
 
   static async getClientById(clientId: number): Promise<any | null> {
-    return ClientsAPI.getClientById(clientId)
+    return SupabaseDatabaseClients.getClientById(clientId)
   }
 
   static convertSupabaseToClient(supabaseClient: any): any {
-    return ClientsAPI.convertSupabaseToClient(supabaseClient)
+    return SupabaseDatabaseClients.convertSupabaseToClient(supabaseClient)
   }
 
   static async advancedSearchClients(filters: any): Promise<any[]> {
-    return ClientsAPI.advancedSearchClients(filters)
+    return SupabaseDatabaseClients.advancedSearchClients(filters)
   }
 
   // ===== عمليات المستثمرين =====
   static async getInvestors(): Promise<any[]> {
-    return InvestorsAPI.getInvestors()
+    return SupabaseDatabaseInvestors.getInvestors()
   }
 
   static async addInvestor(investor: any): Promise<number | null> {
-    return InvestorsAPI.addInvestor(investor)
+    return SupabaseDatabaseInvestors.addInvestor(investor)
   }
 
   static async updateInvestor(investorId: number, updates: any): Promise<boolean> {
-    return InvestorsAPI.updateInvestor(investorId, updates)
+    return SupabaseDatabaseInvestors.updateInvestor(investorId, updates)
   }
 
   static async deleteInvestor(investorId: number): Promise<boolean> {
-    return InvestorsAPI.deleteInvestor(investorId)
+    return SupabaseDatabaseInvestors.deleteInvestor(investorId)
   }
 
   static async getInvestorById(investorId: number): Promise<any | null> {
-    return InvestorsAPI.getInvestorById(investorId)
+    return SupabaseDatabaseInvestors.getInvestorById(investorId)
   }
 
   static async searchInvestors(searchTerm: string): Promise<any[]> {
-    return InvestorsAPI.searchInvestors(searchTerm)
+    return SupabaseDatabaseInvestors.searchInvestors(searchTerm)
   }
 
   // ===== عمليات التمويل والسحوبات =====
   static async addFundingRecord(record: any): Promise<number | null> {
-    return InvestorsAPI.addFundingRecord(record)
+    return SupabaseDatabaseInvestors.addFundingRecord(record)
   }
 
   static async getFundingRecords(investorId?: number): Promise<any[]> {
-    return InvestorsAPI.getFundingRecords(investorId)
+    return SupabaseDatabaseInvestors.getFundingRecords(investorId)
   }
 
   static async addWithdrawalRecord(record: any): Promise<number | null> {
-    return InvestorsAPI.addWithdrawalRecord(record)
+    return SupabaseDatabaseInvestors.addWithdrawalRecord(record)
   }
 
   static async getWithdrawalRecords(investorId?: number): Promise<any[]> {
-    return InvestorsAPI.getWithdrawalRecords(investorId)
+    return SupabaseDatabaseInvestors.getWithdrawalRecords(investorId)
   }
 
   static async addPartnerWithdrawalRecord(record: any): Promise<number | null> {
-    return InvestorsAPI.addPartnerWithdrawalRecord(record)
+    return SupabaseDatabaseInvestors.addPartnerWithdrawalRecord(record)
   }
 
   static async getPartnerWithdrawalRecords(investorId?: number): Promise<any[]> {
-    return InvestorsAPI.getPartnerWithdrawalRecords(investorId)
+    return SupabaseDatabaseInvestors.getPartnerWithdrawalRecords(investorId)
   }
 
   static async getAvailableBalance(investorId: number): Promise<number> {
-    return InvestorsAPI.getAvailableBalance(investorId)
+    return SupabaseDatabaseInvestors.getAvailableBalance(investorId)
   }
 
   // ===== عمليات المدفوعات =====
   static async getPayments(clientId?: number): Promise<any[]> {
-    return PaymentsAPI.getPayments(clientId)
+    return SupabaseDatabasePayments.getPayments(clientId)
   }
 
   static async addPaymentRecord(record: any): Promise<number | null> {
-    return PaymentsAPI.addPaymentRecord(record)
+    return SupabaseDatabasePayments.addPaymentRecord(record)
   }
 
   static async updatePaymentRecord(paymentId: number, updates: any): Promise<boolean> {
-    return PaymentsAPI.updatePaymentRecord(paymentId, updates)
+    return SupabaseDatabasePayments.updatePaymentRecord(paymentId, updates)
   }
 
   static async deletePaymentRecord(paymentId: number): Promise<boolean> {
-    return PaymentsAPI.deletePaymentRecord(paymentId)
+    return SupabaseDatabasePayments.deletePaymentRecord(paymentId)
   }
 
   static async getTotalPayments(clientId: number): Promise<number> {
-    return PaymentsAPI.getTotalPayments(clientId)
+    return SupabaseDatabasePayments.getTotalPayments(clientId)
   }
 
   static async getPaymentsByDateRange(startDate: string, endDate: string, clientId?: number): Promise<any[]> {
-    return PaymentsAPI.getPaymentsByDateRange(startDate, endDate, clientId)
+    return SupabaseDatabasePayments.getPaymentsByDateRange(startDate, endDate, clientId)
   }
 
   static async searchPayments(searchTerm: string): Promise<any[]> {
-    return PaymentsAPI.searchPayments(searchTerm)
+    return SupabaseDatabasePayments.searchPayments(searchTerm)
   }
 
   static async getPaymentStats(): Promise<any> {
-    return PaymentsAPI.getPaymentStats()
+    return SupabaseDatabasePayments.getPaymentStats()
   }
 
   static async getAdvancedPaymentStats(clientId?: number): Promise<any> {
-    return PaymentsAPI.getAdvancedPaymentStats(clientId)
+    return SupabaseDatabasePayments.getAdvancedPaymentStats(clientId)
   }
 
   static async getRecentPayments(limit: number = 10, clientId?: number): Promise<any[]> {
-    return PaymentsAPI.getRecentPayments(limit, clientId)
+    return SupabaseDatabasePayments.getRecentPayments(limit, clientId)
   }
 
   // ===== عمليات المصروفات =====
   static async getTransactionExpenses(clientId?: number): Promise<any[]> {
-    return ExpensesAPI.getTransactionExpenses(clientId)
+    return SupabaseDatabaseExpenses.getTransactionExpenses(clientId)
   }
 
   static async addTransactionExpense(expense: any): Promise<number | null> {
-    return ExpensesAPI.addTransactionExpense(expense)
+    return SupabaseDatabaseExpenses.addTransactionExpense(expense)
   }
 
   static async updateTransactionExpense(expenseId: number, updates: any): Promise<boolean> {
-    return ExpensesAPI.updateTransactionExpense(expenseId, updates)
+    return SupabaseDatabaseExpenses.updateTransactionExpense(expenseId, updates)
   }
 
   static async deleteTransactionExpense(expenseId: number): Promise<boolean> {
-    return ExpensesAPI.deleteTransactionExpense(expenseId)
+    return SupabaseDatabaseExpenses.deleteTransactionExpense(expenseId)
   }
 
   // ===== عمليات أتعاب المحامي =====
   static async getLawyerFees(clientId?: number): Promise<any[]> {
-    return ExpensesAPI.getLawyerFees(clientId)
+    return SupabaseDatabaseExpenses.getLawyerFees(clientId)
   }
 
   static async addLawyerFee(fee: any): Promise<number | null> {
-    return ExpensesAPI.addLawyerFee(fee)
+    return SupabaseDatabaseExpenses.addLawyerFee(fee)
   }
 
   static async updateLawyerFee(feeId: number, updates: any): Promise<boolean> {
-    return ExpensesAPI.updateLawyerFee(feeId, updates)
+    return SupabaseDatabaseExpenses.updateLawyerFee(feeId, updates)
   }
 
   static async deleteLawyerFee(feeId: number): Promise<boolean> {
-    return ExpensesAPI.deleteLawyerFee(feeId)
+    return SupabaseDatabaseExpenses.deleteLawyerFee(feeId)
   }
 
   // ===== إحصائيات المصروفات =====
   static async getExpensesStats(clientId?: number): Promise<any> {
-    return ExpensesAPI.getExpensesStats(clientId)
+    return SupabaseDatabaseExpenses.getExpensesStats(clientId)
   }
 
   static async searchExpenses(searchTerm: string): Promise<{ expenses: any[], fees: any[] }> {
-    return ExpensesAPI.searchExpenses(searchTerm)
+    return SupabaseDatabaseExpenses.searchExpenses(searchTerm)
   }
 
   static async getAdvancedExpensesStats(clientId?: number): Promise<any> {
-    return ExpensesAPI.getAdvancedExpensesStats(clientId)
+    return SupabaseDatabaseExpenses.getAdvancedExpensesStats(clientId)
   }
 
   // ===== عمليات النظام =====
   static async deleteAllClients(): Promise<boolean> {
-    return SystemAPI.deleteAllClients()
+    return SupabaseDatabaseSystem.deleteAllClients()
   }
 
   static async deleteAllInvestors(): Promise<boolean> {
-    return SystemAPI.deleteAllInvestors()
+    return SupabaseDatabaseSystem.deleteAllInvestors()
   }
 
   static async deleteAllPayments(): Promise<boolean> {
-    return SystemAPI.deleteAllPayments()
+    return SupabaseDatabaseSystem.deleteAllPayments()
   }
 
   static async deleteAllExpenses(): Promise<boolean> {
-    return SystemAPI.deleteAllExpenses()
+    return SupabaseDatabaseSystem.deleteAllExpenses()
   }
 
   static async deleteAllData(): Promise<boolean> {
-    return SystemAPI.deleteAllData()
+    return SupabaseDatabaseSystem.deleteAllData()
   }
 
   static async getSystemStats(): Promise<any> {
-    return SystemAPI.getSystemStats()
+    return SupabaseDatabaseSystem.getSystemStats()
   }
 
   static async performHealthCheck(): Promise<{
@@ -238,22 +229,11 @@ export class SupabaseDatabase {
     checks: any[]
     timestamp: string
   }> {
-    return SystemAPI.performHealthCheck()
+    return SupabaseDatabaseSystem.performHealthCheck()
   }
 }
 
 // دالة اختبار الاتصال (للتوافق مع الكود القديم)
 export async function testSupabaseConnection(): Promise<boolean> {
   return DatabaseAPI.testConnection()
-}
-
-// تصدير الخدمات المتخصصة للاستخدام المباشر عند الحاجة
-export {
-  DatabaseConnection,
-  SystemHealthService,
-  DataCleanupService,
-  ClientsService,
-  InvestorsService,
-  PaymentsService,
-  ExpensesService
 }

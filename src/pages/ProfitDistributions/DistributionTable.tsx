@@ -68,13 +68,13 @@ const DistributionTable: React.FC<DistributionTableProps> = ({
                     <div className="flex-shrink-0 h-10 w-10">
                       <div className="h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center">
                         <span className="text-blue-600 font-medium text-sm">
-                          {distribution.investorName.charAt(0)}
+                          {distribution.investorName?.charAt(0) || '؟'}
                         </span>
                       </div>
                     </div>
                     <div className="mr-4">
                       <div className="text-sm font-medium text-gray-900">
-                        {distribution.investorName}
+                        {distribution.investorName || 'غير محدد'}
                       </div>
                       <div className="text-sm text-gray-500">
                         ID: {distribution.investorId}

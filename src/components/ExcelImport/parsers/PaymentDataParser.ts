@@ -175,7 +175,7 @@ export class PaymentDataParser {
    * تحويل المدفوعات إلى تنسيق قاعدة البيانات
    */
   static convertToDbFormat(payments: PaymentRecord[], clientId: number): any[] {
-    return payments.map((payment, index) => ({
+    return payments.map((payment) => ({
       client_id: clientId,
       date: payment.date,
       amount: payment.amount,

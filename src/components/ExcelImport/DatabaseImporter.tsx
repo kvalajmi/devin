@@ -114,9 +114,6 @@ export class DatabaseImporter {
    */
   private async insertPayments(clientId: number, payments: any[]): Promise<void> {
     try {
-      const now = new Date().toISOString()
-      const currentUser = 'مستورد من Excel'
-
       const paymentRecords = payments.map(payment => ({
         client_id: clientId,
         amount: payment.amount,

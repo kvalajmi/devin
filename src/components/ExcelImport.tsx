@@ -6,7 +6,8 @@ import * as XLSX from 'xlsx'
 import ExcelReader from './ExcelImport/ExcelReader'
 import ImportProgress from './ExcelImport/ImportProgress'
 import ImportResults from './ExcelImport/ImportResults'
-import DataParser, { ImportedClient } from './ExcelImport/DataParser'
+import { ImportedClient } from './ExcelImport/DataParser'
+import { DataParserClass } from './ExcelImport/DataParserClass'
 import { DatabaseImporter } from './ExcelImport/DatabaseImporter'
 
 /**
@@ -36,8 +37,8 @@ const ExcelImport: React.FC = () => {
       setProgress(10)
       setCurrentStep('بدء تحليل الملف...')
 
-      // إنشاء محلل البيانات
-      const parser = new DataParser(updateProgress)
+      // تحليل البيانات مباشرة
+      const parser = new DataParserClass(updateProgress)
       
       // تحليل البيانات
       const clients = await parser.parseWorkbook(workbook)

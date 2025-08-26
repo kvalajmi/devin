@@ -114,14 +114,14 @@ const ProfitDistributions: React.FC = () => {
             <div className="bg-white rounded-lg shadow-sm p-4">
               <div className="text-sm text-gray-500">إجمالي المتاح للتوزيع</div>
               <div className="text-2xl font-bold text-green-600">
-                {stats.totalAvailable.toLocaleString()} د.ك
+                {stats.totalAvailableProfit.toLocaleString()} د.ك
               </div>
             </div>
             
             <div className="bg-white rounded-lg shadow-sm p-4">
               <div className="text-sm text-gray-500">إجمالي الموزع</div>
               <div className="text-2xl font-bold text-blue-600">
-                {stats.totalDistributed.toLocaleString()} د.ك
+                {stats.totalDistributedAmount.toLocaleString()} د.ك
               </div>
             </div>
             
@@ -135,7 +135,7 @@ const ProfitDistributions: React.FC = () => {
             <div className="bg-white rounded-lg shadow-sm p-4">
               <div className="text-sm text-gray-500">المتبقي للتوزيع</div>
               <div className="text-2xl font-bold text-orange-600">
-                {stats.remainingToDistribute.toLocaleString()} د.ك
+                {stats.remainingProfit.toLocaleString()} د.ك
               </div>
             </div>
           </div>
