@@ -1,30 +1,36 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import GlobalArabicNumberInput from './GlobalArabicNumberInput'
 
-interface NewLawyerFee {
-  amount: string
-  date: string
-  description: string
-}
-
-interface LawyerFeeFormModalProps {
+interface EditLawyerFeeModalProps {
   isOpen: boolean
-  newLawyerFee: NewLawyerFee
-  setNewLawyerFee: (fee: NewLawyerFee) => void
-  onAddLawyerFee: () => void
+  lawyerFee: any
+  onSave: (amount: number, description?: string) => void
   onClose: () => void
 }
 
-/**
- * نموذج إضافة أتعاب محامي جديدة
- */
-const LawyerFeeFormModal: React.FC<LawyerFeeFormModalProps> = ({
+const EditLawyerFeeModal: React.FC<EditLawyerFeeModalProps> = ({
   isOpen,
-  newLawyerFee,
-  setNewLawyerFee,
-  onAddLawyerFee,
+  lawyerFee,
+  onSave,
   onClose
 }) => {
+  const [amount, setAmount] = useState('')
+  const [description, setDescription] = useState('')
+
+  useEffect(() => {
+    if (lawyerFee) {
+      setAmount(lawyerFee.amount?.toString() || '')
+      setDescription(lawyerFee.description || '')
+    }
+  }, [lawyerFee])
+
+  const handleSave = () => {
+    const numAmount = parseFloat(amount)
+    if (!isNaN(numAmount)) {
+      onSave(numAmount, description)
+    }
+  }
+
   if (!isOpen) return null
 
   return (
@@ -33,25 +39,15 @@ const LawyerFeeFormModal: React.FC<LawyerFeeFormModalProps> = ({
         <div className="fixed inset-0 bg-black bg-opacity-50 transition-opacity" onClick={onClose}></div>
         
         <div className="relative w-full max-w-md transform overflow-hidden rounded-lg bg-white p-6 text-right shadow-xl transition-all">
-          <h3 className="text-lg font-semibold text-gray-800 mb-4">إضافة أتعاب محامي</h3>
+          <h3 className="text-lg font-semibold text-gray-800 mb-4">تعديل أتعاب المحامي</h3>
           
           <div className="space-y-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">المبلغ (د.ك)</label>
               <GlobalArabicNumberInput
-                value={newLawyerFee.amount}
-                onChange={(value) => setNewLawyerFee({...newLawyerFee, amount: value})}
-                placeholder="أدخل مبلغ الأتعاب"
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">التاريخ</label>
-              <input
-                type="date"
-                value={newLawyerFee.date}
-                onChange={(e) => setNewLawyerFee({...newLawyerFee, date: e.target.value})}
+                value={amount}
+                onChange={setAmount}
+                placeholder="أدخل المبلغ"
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
               />
             </div>
@@ -60,8 +56,8 @@ const LawyerFeeFormModal: React.FC<LawyerFeeFormModalProps> = ({
               <label className="block text-sm font-medium text-gray-700 mb-2">وصف الأتعاب</label>
               <input
                 type="text"
-                value={newLawyerFee.description}
-                onChange={(e) => setNewLawyerFee({...newLawyerFee, description: e.target.value})}
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                 placeholder="أدخل وصف الأتعاب"
               />
@@ -76,10 +72,10 @@ const LawyerFeeFormModal: React.FC<LawyerFeeFormModalProps> = ({
               إلغاء
             </button>
             <button
-              onClick={onAddLawyerFee}
+              onClick={handleSave}
               className="px-4 py-2 text-sm text-white bg-purple-600 hover:bg-purple-700 rounded-md transition-colors"
             >
-              إضافة الأتعاب
+              حفظ التعديل
             </button>
           </div>
         </div>
@@ -88,4 +84,4 @@ const LawyerFeeFormModal: React.FC<LawyerFeeFormModalProps> = ({
   )
 }
 
-export default LawyerFeeFormModal
+export default EditLawyerFeeModal

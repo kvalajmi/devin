@@ -18,15 +18,6 @@ interface PaymentsTableProps {
   onEditPayment: (paymentId: number) => void
   onDeletePayment: (paymentId: number) => void
   onAddPayment: () => void
-  showAddModal: boolean
-  setShowAddModal: (show: boolean) => void
-  showEditModal: boolean
-  setShowEditModal: (show: boolean) => void
-  editingPayment: Payment | null
-  newPayment: { amount: string; date: string; notes: string }
-  setNewPayment: (payment: { amount: string; date: string; notes: string }) => void
-  confirmEditPayment: (amount: number, notes?: string) => void
-  cancelEditPayment: () => void
 }
 
 /**
@@ -36,16 +27,7 @@ const PaymentsTable: React.FC<PaymentsTableProps> = ({
   payments,
   onEditPayment,
   onDeletePayment,
-  onAddPayment,
-  showAddModal,
-  setShowAddModal,
-  showEditModal,
-  setShowEditModal,
-  editingPayment,
-  newPayment,
-  setNewPayment,
-  confirmEditPayment,
-  cancelEditPayment
+  onAddPayment
 }) => {
   const { showConfirm } = useConfirmationContext()
   const deleteConfirm = createDeleteConfirm(showConfirm)

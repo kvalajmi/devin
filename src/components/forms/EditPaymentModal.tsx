@@ -1,30 +1,36 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import GlobalArabicNumberInput from './GlobalArabicNumberInput'
 
-interface NewPayment {
-  amount: string
-  date: string
-  notes: string
-}
-
-interface PaymentFormModalProps {
+interface EditPaymentModalProps {
   isOpen: boolean
-  newPayment: NewPayment
-  setNewPayment: (payment: NewPayment) => void
-  onAddPayment: () => void
+  payment: any
+  onSave: (amount: number, notes?: string) => void
   onClose: () => void
 }
 
-/**
- * نموذج إضافة دفعة جديدة
- */
-const PaymentFormModal: React.FC<PaymentFormModalProps> = ({
+const EditPaymentModal: React.FC<EditPaymentModalProps> = ({
   isOpen,
-  newPayment,
-  setNewPayment,
-  onAddPayment,
+  payment,
+  onSave,
   onClose
 }) => {
+  const [amount, setAmount] = useState('')
+  const [notes, setNotes] = useState('')
+
+  useEffect(() => {
+    if (payment) {
+      setAmount(payment.amount?.toString() || '')
+      setNotes(payment.notes || '')
+    }
+  }, [payment])
+
+  const handleSave = () => {
+    const numAmount = parseFloat(amount)
+    if (!isNaN(numAmount)) {
+      onSave(numAmount, notes)
+    }
+  }
+
   if (!isOpen) return null
 
   return (
@@ -33,37 +39,27 @@ const PaymentFormModal: React.FC<PaymentFormModalProps> = ({
         <div className="fixed inset-0 bg-black bg-opacity-50 transition-opacity" onClick={onClose}></div>
         
         <div className="relative w-full max-w-md transform overflow-hidden rounded-lg bg-white p-6 text-right shadow-xl transition-all">
-          <h3 className="text-lg font-semibold text-gray-800 mb-4">إضافة دفعة جديدة</h3>
+          <h3 className="text-lg font-semibold text-gray-800 mb-4">تعديل الدفعة</h3>
           
           <div className="space-y-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">المبلغ (د.ك)</label>
               <GlobalArabicNumberInput
-                value={newPayment.amount}
-                onChange={(value) => setNewPayment({...newPayment, amount: value})}
-                placeholder="أدخل مبلغ الدفعة"
+                value={amount}
+                onChange={setAmount}
+                placeholder="أدخل المبلغ"
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">التاريخ</label>
-              <input
-                type="date"
-                value={newPayment.date}
-                onChange={(e) => setNewPayment({...newPayment, date: e.target.value})}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">ملاحظات (اختياري)</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">ملاحظات</label>
               <textarea
-                value={newPayment.notes}
-                onChange={(e) => setNewPayment({...newPayment, notes: e.target.value})}
+                value={notes}
+                onChange={(e) => setNotes(e.target.value)}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
                 rows={3}
-                placeholder="أدخل أي ملاحظات إضافية"
+                placeholder="أدخل أي ملاحظات"
               />
             </div>
           </div>
@@ -76,10 +72,10 @@ const PaymentFormModal: React.FC<PaymentFormModalProps> = ({
               إلغاء
             </button>
             <button
-              onClick={onAddPayment}
+              onClick={handleSave}
               className="px-4 py-2 text-sm text-white bg-green-600 hover:bg-green-700 rounded-md transition-colors"
             >
-              إضافة الدفعة
+              حفظ التعديل
             </button>
           </div>
         </div>
@@ -88,4 +84,4 @@ const PaymentFormModal: React.FC<PaymentFormModalProps> = ({
   )
 }
 
-export default PaymentFormModal
+export default EditPaymentModal

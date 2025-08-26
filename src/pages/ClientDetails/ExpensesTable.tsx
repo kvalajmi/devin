@@ -17,15 +17,6 @@ interface ExpensesTableProps {
   onEditExpense: (expenseId: number) => void
   onDeleteExpense: (expenseId: number) => void
   onAddExpense: () => void
-  showAddModal: boolean
-  setShowAddModal: (show: boolean) => void
-  showEditModal: boolean
-  setShowEditModal: (show: boolean) => void
-  editingExpense: Expense | null
-  newExpense: { amount: string; date: string; description: string }
-  setNewExpense: (expense: { amount: string; date: string; description: string }) => void
-  confirmEditExpense: (amount: number, description?: string) => void
-  cancelEditExpense: () => void
 }
 
 /**
@@ -35,16 +26,7 @@ const ExpensesTable: React.FC<ExpensesTableProps> = ({
   expenses,
   onEditExpense,
   onDeleteExpense,
-  onAddExpense,
-  showAddModal,
-  setShowAddModal,
-  showEditModal,
-  setShowEditModal,
-  editingExpense,
-  newExpense,
-  setNewExpense,
-  confirmEditExpense,
-  cancelEditExpense
+  onAddExpense
 }) => {
   const { showConfirm } = useConfirmationContext()
   const deleteConfirm = createDeleteConfirm(showConfirm)

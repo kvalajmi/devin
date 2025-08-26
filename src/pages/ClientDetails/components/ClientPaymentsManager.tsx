@@ -1,5 +1,7 @@
 import React from 'react'
 import PaymentsTable from '../PaymentsTable'
+import PaymentFormModal from '../../../components/forms/PaymentFormModal'
+import EditPaymentModal from '../../../components/forms/EditPaymentModal'
 import { useClientData } from '../context/ClientDataContext'
 
 interface ClientPaymentsManagerProps {
@@ -79,18 +81,26 @@ const ClientPaymentsManager: React.FC<ClientPaymentsManagerProps> = () => {
       {/* جدول المدفوعات */}
       <PaymentsTable
         payments={payments}
-        onAddPayment={handleAddPayment}
+        onAddPayment={() => setShowAddPaymentModal(true)}
         onEditPayment={handleEditPayment}
         onDeletePayment={handleDeletePayment}
-        showAddModal={showAddPaymentModal}
-        setShowAddModal={setShowAddPaymentModal}
-        showEditModal={showEditPaymentModal}
-        setShowEditModal={setShowEditPaymentModal}
-        editingPayment={editingPayment}
+      />
+
+      {/* نموذج إضافة دفعة */}
+      <PaymentFormModal
+        isOpen={showAddPaymentModal}
         newPayment={newPayment}
         setNewPayment={setNewPayment}
-        confirmEditPayment={confirmEditPayment}
-        cancelEditPayment={cancelEditPayment}
+        onAddPayment={handleAddPayment}
+        onClose={() => setShowAddPaymentModal(false)}
+      />
+
+      {/* نموذج تعديل دفعة */}
+      <EditPaymentModal
+        isOpen={showEditPaymentModal}
+        payment={editingPayment}
+        onSave={confirmEditPayment}
+        onClose={cancelEditPayment}
       />
     </div>
   )

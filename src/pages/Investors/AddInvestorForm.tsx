@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import GlobalArabicNumberInput from '../../components/forms/GlobalArabicNumberInput'
 import { Investor } from './types'
 
 interface AddInvestorFormProps {
@@ -56,33 +57,15 @@ const AddInvestorForm: React.FC<AddInvestorFormProps> = ({ onAdd, onCancel }) =>
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">نسبة المستثمر (%)</label>
-            <input
+            <GlobalArabicNumberInput
               type="text"
-              inputMode="numeric"
-              value={newInvestor.investorPercentage}
-              onChange={(e) => {
-                const value = e.target.value;
-                // تحويل الأرقام العربية إلى إنجليزية
-                const englishValue = value
-                  .replace(/٠/g, '0')
-                  .replace(/١/g, '1')
-                  .replace(/٢/g, '2')
-                  .replace(/٣/g, '3')
-                  .replace(/٤/g, '4')
-                  .replace(/٥/g, '5')
-                  .replace(/٦/g, '6')
-                  .replace(/٧/g, '7')
-                  .replace(/٨/g, '8')
-                  .replace(/٩/g, '9');
-                
-                // التحقق من أن القيمة رقمية فقط
-                if (/^\d*$/.test(englishValue)) {
-                  setNewInvestor({...newInvestor, investorPercentage: Number(englishValue)});
-                }
+              value={newInvestor.investorPercentage.toString()}
+              onChange={(value) => {
+                const numValue = parseInt(value) || 0;
+                setNewInvestor({...newInvestor, investorPercentage: numValue});
               }}
               className="input-field"
               placeholder="50"
-              required
             />
           </div>
 
@@ -98,33 +81,16 @@ const AddInvestorForm: React.FC<AddInvestorFormProps> = ({ onAdd, onCancel }) =>
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">الرقم المدني</label>
-            <input
+            <GlobalArabicNumberInput
               type="text"
-              maxLength={12}
               value={newInvestor.civilId}
-              onChange={(e) => {
-                const value = e.target.value;
-                // تحويل الأرقام العربية إلى إنجليزية
-                const englishValue = value
-                  .replace(/٠/g, '0')
-                  .replace(/١/g, '1')
-                  .replace(/٢/g, '2')
-                  .replace(/٣/g, '3')
-                  .replace(/٤/g, '4')
-                  .replace(/٥/g, '5')
-                  .replace(/٦/g, '6')
-                  .replace(/٧/g, '7')
-                  .replace(/٨/g, '8')
-                  .replace(/٩/g, '9');
-                
-                // التحقق من أن القيمة رقمية فقط
-                if (/^\d*$/.test(englishValue)) {
-                  setNewInvestor({...newInvestor, civilId: englishValue});
+              onChange={(value) => {
+                if (/^\d*$/.test(value) && value.length <= 12) {
+                  setNewInvestor({...newInvestor, civilId: value});
                 }
               }}
               className="input-field"
               placeholder="أدخل الرقم المدني"
-              required
             />
           </div>
 

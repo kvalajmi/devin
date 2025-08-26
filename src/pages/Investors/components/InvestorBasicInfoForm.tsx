@@ -61,17 +61,7 @@ const InvestorBasicInfoForm: React.FC<InvestorBasicInfoFormProps> = ({
         <label className="block text-sm font-medium text-gray-700 mb-1">
           تاريخ الانضمام
         </label>
-        {isEditing ? (
-          <input
-            type="date"
-            value={formData.joinDate || ''}
-            onChange={(e) => onInputChange('joinDate', e.target.value)}
-            className="input-field"
-            disabled={isLoading}
-          />
-        ) : (
-          <p className="text-gray-900">{investor.joinDate}</p>
-        )}
+        <p className="text-gray-900">{investor.joinDate}</p>
       </div>
     </div>
   )

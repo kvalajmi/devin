@@ -1,30 +1,36 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import GlobalArabicNumberInput from './GlobalArabicNumberInput'
 
-interface NewExpense {
-  amount: string
-  date: string
-  description: string
-}
-
-interface ExpenseFormModalProps {
+interface EditExpenseModalProps {
   isOpen: boolean
-  newExpense: NewExpense
-  setNewExpense: (expense: NewExpense) => void
-  onAddExpense: () => void
+  expense: any
+  onSave: (amount: number, description?: string) => void
   onClose: () => void
 }
 
-/**
- * نموذج إضافة مصروف جديد
- */
-const ExpenseFormModal: React.FC<ExpenseFormModalProps> = ({
+const EditExpenseModal: React.FC<EditExpenseModalProps> = ({
   isOpen,
-  newExpense,
-  setNewExpense,
-  onAddExpense,
+  expense,
+  onSave,
   onClose
 }) => {
+  const [amount, setAmount] = useState('')
+  const [description, setDescription] = useState('')
+
+  useEffect(() => {
+    if (expense) {
+      setAmount(expense.amount?.toString() || '')
+      setDescription(expense.description || '')
+    }
+  }, [expense])
+
+  const handleSave = () => {
+    const numAmount = parseFloat(amount)
+    if (!isNaN(numAmount)) {
+      onSave(numAmount, description)
+    }
+  }
+
   if (!isOpen) return null
 
   return (
@@ -33,25 +39,15 @@ const ExpenseFormModal: React.FC<ExpenseFormModalProps> = ({
         <div className="fixed inset-0 bg-black bg-opacity-50 transition-opacity" onClick={onClose}></div>
         
         <div className="relative w-full max-w-md transform overflow-hidden rounded-lg bg-white p-6 text-right shadow-xl transition-all">
-          <h3 className="text-lg font-semibold text-gray-800 mb-4">إضافة مصروف جديد</h3>
+          <h3 className="text-lg font-semibold text-gray-800 mb-4">تعديل المصروف</h3>
           
           <div className="space-y-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">المبلغ (د.ك)</label>
               <GlobalArabicNumberInput
-                value={newExpense.amount}
-                onChange={(value) => setNewExpense({...newExpense, amount: value})}
-                placeholder="أدخل مبلغ المصروف"
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">التاريخ</label>
-              <input
-                type="date"
-                value={newExpense.date}
-                onChange={(e) => setNewExpense({...newExpense, date: e.target.value})}
+                value={amount}
+                onChange={setAmount}
+                placeholder="أدخل المبلغ"
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"
               />
             </div>
@@ -60,8 +56,8 @@ const ExpenseFormModal: React.FC<ExpenseFormModalProps> = ({
               <label className="block text-sm font-medium text-gray-700 mb-2">وصف المصروف</label>
               <input
                 type="text"
-                value={newExpense.description}
-                onChange={(e) => setNewExpense({...newExpense, description: e.target.value})}
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"
                 placeholder="أدخل وصف المصروف"
               />
@@ -76,10 +72,10 @@ const ExpenseFormModal: React.FC<ExpenseFormModalProps> = ({
               إلغاء
             </button>
             <button
-              onClick={onAddExpense}
+              onClick={handleSave}
               className="px-4 py-2 text-sm text-white bg-red-600 hover:bg-red-700 rounded-md transition-colors"
             >
-              إضافة المصروف
+              حفظ التعديل
             </button>
           </div>
         </div>
@@ -88,4 +84,4 @@ const ExpenseFormModal: React.FC<ExpenseFormModalProps> = ({
   )
 }
 
-export default ExpenseFormModal
+export default EditExpenseModal
