@@ -37,7 +37,7 @@ export const formatPercentage = (percentage: number, decimals: number = 1): stri
 }
 
 /**
- * تنسيق التاريخ بالتقويم الميلادي (DD/MM/YYYY)
+ * تنسيق التاريخ بالتقويم الميلادي (DD/MM/YYYY) - أرقام إنجليزية فقط
  */
 export const formatDate = (dateString: string | Date): string => {
   const date = typeof dateString === 'string' ? new Date(dateString) : dateString
@@ -49,7 +49,7 @@ export const formatDate = (dateString: string | Date): string => {
 }
 
 /**
- * تنسيق التاريخ والوقت بالتقويم الميلادي
+ * تنسيق التاريخ والوقت بالتقويم الميلادي - أرقام إنجليزية فقط
  */
 export const formatDateTime = (dateString: string | Date): string => {
   const date = typeof dateString === 'string' ? new Date(dateString) : dateString
@@ -63,12 +63,12 @@ export const formatDateTime = (dateString: string | Date): string => {
 }
 
 /**
- * تنسيق التاريخ بصيغة مختصرة (MMM YYYY)
+ * تنسيق التاريخ بصيغة مختصرة (MM/YYYY) - أرقام إنجليزية فقط
  */
 export const formatDateShort = (dateString: string | Date): string => {
   const date = typeof dateString === 'string' ? new Date(dateString) : dateString
-  return date.toLocaleDateString('en-US', {
-    month: 'short',
+  return date.toLocaleDateString('en-GB', {
+    month: '2-digit',
     year: 'numeric'
   })
 }

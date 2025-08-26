@@ -1,4 +1,5 @@
 import React from 'react'
+import ArabicNumberInput from '../../components/forms/ArabicNumberInput'
 
 interface ClientsSearchProps {
   searchTerm: string

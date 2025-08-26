@@ -6,6 +6,7 @@ import { useInvestorData } from './useInvestorData'
 import { useInvestorForms } from './useInvestorForms'
 import { useGlobalNotifications } from './useGlobalNotifications'
 import { useInvestorStats } from './useInvestorStats'
+import { InvestorDeletionValidator } from '../services/validation/InvestorDeletionValidator'
 import { Investor } from '../pages/Investors/types'
 
 /**
@@ -31,6 +32,12 @@ export const useInvestorManagement = () => {
   // دالة حذف المستثمر مع تأكيد
   const handleDeleteInvestor = useCallback(async (investorId: number) => {
     try {
+      const validation = await InvestorDeletionValidator.canDeleteInvestor(investorId)
+      if (!validation.canDelete) {
+        showNotification('error', `❌ ${validation.message}`)
+        return false
+      }
+
       const success = await deleteConfirm.deleteInvestor()
       if (!success) return false
 
@@ -87,7 +94,6 @@ export const useInvestorManagement = () => {
     showAddForm,
     showDetailsForm,
     selectedInvestor,
-    alert,
 
     // الوظائف
     addInvestor: handleAddInvestor,

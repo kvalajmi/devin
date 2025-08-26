@@ -3,6 +3,7 @@ import { Client } from '../../types/DatabaseTypes'
 import ArabicNumberInput from './ArabicNumberInput'
 import ArabicDateInput from './ArabicDateInput'
 import LoanBasicInfoSection from './LoanEditModal/LoanBasicInfoSection'
+import { LoanCodeValidator } from '../../services/validation/LoanCodeValidator'
 
 interface LoanEditModalProps {
   isOpen: boolean
@@ -77,6 +78,18 @@ const LoanEditModal: React.FC<LoanEditModalProps> = ({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    
+    if (formData.loan_code) {
+      const validation = await LoanCodeValidator.validateLoanCodeUniqueness(
+        formData.loan_code, 
+        client?.id
+      )
+      if (!validation.isValid) {
+        alert(`❌ ${validation.message}`)
+        return
+      }
+    }
+    
     try {
       await onSave(formData)
       alert('✅ تم حفظ بيانات القرض بنجاح')

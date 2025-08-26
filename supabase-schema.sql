@@ -238,8 +238,20 @@ ALTER TABLE clients ADD COLUMN IF NOT EXISTS transaction_date TIMESTAMP;
 ALTER TABLE clients ADD COLUMN IF NOT EXISTS installment_amount DECIMAL(10,3);
 ALTER TABLE clients ADD COLUMN IF NOT EXISTS first_installment_date TIMESTAMP;
 
+-- إضافة حقل معرف المستثمر لربط العملاء بالمستثمرين
+ALTER TABLE clients ADD COLUMN IF NOT EXISTS investor_id BIGINT REFERENCES investors(id) ON DELETE CASCADE;
+
+-- إضافة حقل كود القرض
+ALTER TABLE clients ADD COLUMN IF NOT EXISTS loan_code VARCHAR(5);
+
 -- إنشاء فهرس لحقل كود المعاملة
 CREATE INDEX IF NOT EXISTS idx_clients_transaction_code ON clients(transaction_code);
+
+-- إنشاء فهرس لحقل معرف المستثمر
+CREATE INDEX IF NOT EXISTS idx_clients_investor_id ON clients(investor_id);
+
+-- إنشاء فهرس لحقل كود القرض
+CREATE INDEX IF NOT EXISTS idx_clients_loan_code ON clients(loan_code);
 
 -- إضافة تعليقات على الجداول
 COMMENT ON TABLE clients IS 'جدول العملاء مع تفاصيل القروض والمدفوعات';

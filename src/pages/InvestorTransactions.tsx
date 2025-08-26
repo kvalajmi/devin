@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { Client } from '../utils/database'
 import { SupabaseDatabase } from '../utils/supabase-simple'
+import { ClientDataConverter } from './InvestorTransactions/ClientDataConverter'
 
-// استيراد المكونات الجديدة
 import InvestorHeader from './InvestorTransactions/InvestorHeader'
 import ClientsSearch from './InvestorTransactions/ClientsSearch'
 import ClientsTable from './InvestorTransactions/ClientsTable'
@@ -82,9 +82,12 @@ const InvestorTransactions: React.FC = () => {
       console.log('🔄 تحديث بيانات العملاء...')
       const supabaseClients = await SupabaseDatabase.getClients()
       
-      // تحويل البيانات من تنسيق Supabase إلى تنسيق Client
-      const convertedClients = supabaseClients.map(supabaseClient => 
-        SupabaseDatabase.convertSupabaseToClient(supabaseClient)
+      const investorClients = supabaseClients.filter(client => 
+        client.investor_id === parseInt(investorId || '0')
+      )
+      
+      const convertedClients = investorClients.map(supabaseClient => 
+        ClientDataConverter.convertFromSupabase(supabaseClient)
       )
       
       console.log(`✅ تم تحميل ${convertedClients.length} عميل بنجاح`)

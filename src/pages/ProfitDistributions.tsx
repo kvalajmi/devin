@@ -110,32 +110,34 @@ const ProfitDistributions: React.FC = () => {
 
         {/* إحصائيات سريعة */}
         {distributions.length > 0 && stats && (
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-            <div className="bg-white rounded-lg shadow-sm p-4">
-              <div className="text-sm text-gray-500">إجمالي المتاح للتوزيع</div>
-              <div className="text-2xl font-bold text-green-600">
-                {(stats.totalAvailableProfit || 0).toLocaleString()} د.ك
+          <div className="w-full max-w-none">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+              <div className="bg-white rounded-lg shadow-sm p-4">
+                <div className="text-sm text-gray-500">إجمالي المتاح للتوزيع</div>
+                <div className="text-2xl font-bold text-green-600">
+                  {(stats.totalAvailableProfit || 0).toLocaleString()} د.ك
+                </div>
               </div>
-            </div>
-            
-            <div className="bg-white rounded-lg shadow-sm p-4">
-              <div className="text-sm text-gray-500">إجمالي الموزع</div>
-              <div className="text-2xl font-bold text-blue-600">
-                {(stats.totalDistributedAmount || 0).toLocaleString()} د.ك
+              
+              <div className="bg-white rounded-lg shadow-sm p-4">
+                <div className="text-sm text-gray-500">إجمالي الموزع</div>
+                <div className="text-2xl font-bold text-blue-600">
+                  {(stats.totalDistributedAmount || 0).toLocaleString()} د.ك
+                </div>
               </div>
-            </div>
-            
-            <div className="bg-white rounded-lg shadow-sm p-4">
-              <div className="text-sm text-gray-500">نسبة التوزيع</div>
-              <div className="text-2xl font-bold text-purple-600">
-                {(stats.distributionPercentage || 0).toFixed(1)}%
+              
+              <div className="bg-white rounded-lg shadow-sm p-4">
+                <div className="text-sm text-gray-500">نسبة التوزيع</div>
+                <div className="text-2xl font-bold text-purple-600">
+                  {(stats.distributionPercentage || 0).toFixed(1)}%
+                </div>
               </div>
-            </div>
-            
-            <div className="bg-white rounded-lg shadow-sm p-4">
-              <div className="text-sm text-gray-500">المتبقي للتوزيع</div>
-              <div className="text-2xl font-bold text-orange-600">
-                {(stats.remainingProfit || 0).toLocaleString()} د.ك
+              
+              <div className="bg-white rounded-lg shadow-sm p-4">
+                <div className="text-sm text-gray-500">المتبقي للتوزيع</div>
+                <div className="text-2xl font-bold text-orange-600">
+                  {(stats.remainingProfit || 0).toLocaleString()} د.ك
+                </div>
               </div>
             </div>
           </div>
