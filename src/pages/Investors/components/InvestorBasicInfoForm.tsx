@@ -1,4 +1,5 @@
 import React from 'react'
+import GlobalArabicNumberInput from '../../../components/forms/GlobalArabicNumberInput'
 import { Investor } from '../types'
 
 interface InvestorBasicInfoFormProps {
@@ -45,12 +46,16 @@ const InvestorBasicInfoForm: React.FC<InvestorBasicInfoFormProps> = ({
           الرقم المدني
         </label>
         {isEditing ? (
-          <input
-            type="text"
+          <GlobalArabicNumberInput
             value={formData.civilId || ''}
-            onChange={(e) => onInputChange('civilId', e.target.value)}
+            onChange={(value) => {
+              if (/^\d*$/.test(value) && value.length <= 12) {
+                onInputChange('civilId', value);
+              }
+            }}
             className="input-field"
             disabled={isLoading}
+            placeholder="أدخل الرقم المدني"
           />
         ) : (
           <p className="text-gray-900">{investor.civilId}</p>
@@ -62,6 +67,13 @@ const InvestorBasicInfoForm: React.FC<InvestorBasicInfoFormProps> = ({
           تاريخ الانضمام
         </label>
         <p className="text-gray-900">{investor.joinDate}</p>
+      </div>
+
+      <div>
+        <label className="block text-sm font-medium text-gray-700 mb-1">
+          نسبة المستثمر (%)
+        </label>
+        <p className="text-gray-900">{investor.investorPercentage}%</p>
       </div>
     </div>
   )
