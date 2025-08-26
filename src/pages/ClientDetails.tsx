@@ -111,7 +111,7 @@ const ClientDetails: React.FC = () => {
   }
 
   return (
-    <ClientDataProvider clientId={clientId} onNotification={showNotification}>
+    <ClientDataProvider onNotification={showNotification}>
       <div className={styles.fullScreenContainer}>
         <div className={styles.contentWrapper}>
         {/* إشعار */}

@@ -7,19 +7,19 @@ interface ClientStatsDisplayProps {
 
 export const ClientStatsDisplay: React.FC<ClientStatsDisplayProps> = ({ stats }) => {
   const {
-    totalAmount,
-    totalPaid,
-    totalRemaining,
-    progressPercentage,
-    profitRatioFromPaidAmount,
-    collectedGrossProfit,
-    collectedCapital,
-    collectedNetProfit,
-    totalExpenses,
-    totalLawyerFees,
-    investorProfitShare,
-    partnerProfitShare
-  } = stats
+    totalAmount = 0,
+    totalPaid = 0,
+    totalRemaining = 0,
+    progressPercentage = 0,
+    profitRatioFromPaidAmount = 0,
+    collectedGrossProfit = 0,
+    collectedCapital = 0,
+    collectedNetProfit = 0,
+    totalExpenses = 0,
+    totalLawyerFees = 0,
+    investorProfitShare = 0,
+    partnerProfitShare = 0
+  } = stats || {}
 
   return (
     <div className={styles.financialSummaryContainer}>

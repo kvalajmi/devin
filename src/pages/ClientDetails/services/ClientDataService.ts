@@ -1,4 +1,4 @@
-import { Client } from '../../../utils/database'
+import { Client } from '../../../types/DatabaseTypes'
 import { SupabaseDatabase } from '../../../utils/supabase-simple'
 
 /**
