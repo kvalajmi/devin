@@ -1,0 +1,587 @@
+/* تصميم الجداول المحسّن والواضح لصفحة تفاصيل العميل */
+
+/* الحاوي الرئيسي للجدول */
+.tableContainer {
+  background: white;
+  border: 2px solid #d1d5db;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  margin-bottom: 2rem;
+  overflow: hidden;
+}
+
+.tableContainer:hover {
+  box-shadow: 0 8px 15px -3px rgba(0, 0, 0, 0.1);
+  border-color: #9ca3af;
+}
+
+/* رأس الجدول */
+.tableHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.5rem 2rem;
+  background: linear-gradient(135deg, #f9fafb, #f3f4f6);
+  border-bottom: 3px solid #d1d5db;
+}
+
+/* زر الإضافة في رأس الجدول */
+.tableHeader button {
+  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+  color: white;
+  border: none;
+  padding: clamp(0.75rem, 1.5vw, 1rem) clamp(1.25rem, 2.5vw, 1.5rem);
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: clamp(0.8rem, 1.6vw, 0.9rem);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
+}
+
+.tableHeader button:hover {
+  background: linear-gradient(135deg, #1d4ed8, #1e40af);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+}
+
+.tableTitle {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #111827;
+}
+
+.tableIcon {
+  width: 2.5rem;
+  height: 2.5rem;
+  padding: 0.5rem;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  color: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.paymentsIcon {
+  background: linear-gradient(135deg, #10b981, #059669);
+}
+
+.expensesIcon {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+}
+
+.lawyerFeesIcon {
+  background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+}
+
+/* الجدول الأساسي */
+.table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-family: 'Noto Sans Arabic', sans-serif;
+  font-size: 0.9rem;
+}
+
+/* رأس الجدول */
+.tableHead {
+  background: linear-gradient(135deg, #e5e7eb, #d1d5db);
+}
+
+.tableHeadRow {
+  border-bottom: 3px solid #9ca3af;
+}
+
+.tableHeadCell {
+  padding: 1rem 1.5rem;
+  text-align: right;
+  font-weight: 800;
+  font-size: 0.95rem;
+  color: #111827;
+  background: linear-gradient(135deg, #f3f4f6, #e5e7eb);
+  border-right: 2px solid #d1d5db;
+  border-bottom: 2px solid #d1d5db;
+  vertical-align: middle;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* تخصيص رأس عمود الإجراءات */
+.tableHeadCell:last-child {
+  text-align: center !important;
+  width: 180px !important;
+  min-width: 180px !important;
+  max-width: 180px !important;
+}
+
+.tableHeadCell:first-child {
+  border-right: none;
+}
+
+.tableHeadCell::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #3b82f6, transparent);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.tableHeadCell:hover::after {
+  opacity: 1;
+}
+
+/* جسم الجدول */
+.tableBody {
+  background: white;
+}
+
+.tableRow {
+  transition: all 0.2s ease;
+  border-bottom: 2px solid #e5e7eb;
+}
+
+.tableRow:nth-child(even) {
+  background-color: #f9fafb;
+}
+
+.tableRow:nth-child(odd) {
+  background-color: white;
+}
+
+.tableRow:hover {
+  background: linear-gradient(135deg, #dbeafe, #bfdbfe) !important;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(59, 130, 246, 0.15);
+}
+
+.tableRow:last-child {
+  border-bottom: 3px solid #d1d5db;
+}
+
+.tableCell {
+  padding: 1rem 1.5rem;
+  text-align: right;
+  font-size: 0.9rem;
+  color: #111827;
+  vertical-align: middle;
+  border-right: 2px solid #e5e7eb;
+  border-bottom: 1px solid #e5e7eb;
+  font-weight: 500;
+}
+
+.tableCell:first-child {
+  border-right: none;
+}
+
+/* إصلاح محاذاة الأزرار في عمود الإجراءات */
+td.actionsCell,
+.tableCell.actionsCell {
+  display: flex !important;
+  flex-direction: row !important;
+  justify-content: center !important;
+  align-items: center !important;
+  gap: 0.5rem !important;
+  padding: 1rem !important;
+  text-align: center !important;
+  vertical-align: middle !important;
+  width: 180px !important;
+  min-width: 180px !important;
+  max-width: 180px !important;
+}
+
+/* تأكيد محاذاة الأزرار داخل خلية الإجراءات */
+.actionsCell .actionButton {
+  flex-shrink: 0 !important;
+  margin: 0 !important;
+}
+
+/* تخصيص خلية الإجراءات */
+.tableCell.actionsCell {
+  text-align: center !important;
+  vertical-align: middle !important;
+  border-right: 2px solid #e5e7eb !important;
+  padding: 0.75rem !important;
+  width: 180px !important;
+  min-width: 180px !important;
+  max-width: 180px !important;
+}
+
+.tableCell:first-child {
+  border-right: none;
+}
+
+/* خلايا خاصة */
+.dateCell {
+  font-weight: 700;
+  color: #374151;
+  background-color: #f3f4f6;
+  border-radius: 4px;
+  padding: 0.5rem 1rem;
+  text-align: center;
+  font-size: 0.85rem;
+}
+
+.amountCell {
+  font-weight: 800;
+  font-size: 1rem;
+  text-align: center;
+  padding: 0.75rem 1rem;
+  border-radius: 4px;
+}
+
+.amountCell.positive {
+  color: #059669;
+  background-color: #ecfdf5;
+  border: 1px solid #a7f3d0;
+}
+
+.amountCell.negative {
+  color: #dc2626;
+  background-color: #fef2f2;
+  border: 1px solid #fca5a5;
+}
+
+.amountCell.purple {
+  color: #7c3aed;
+  background-color: #f3e8ff;
+  border: 1px solid #c4b5fd;
+}
+
+.userCell {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 0.75rem 1rem;
+}
+
+.userName {
+  font-weight: 700;
+  color: #111827;
+  font-size: 0.9rem;
+}
+
+.userDateTime {
+  font-size: 0.75rem;
+  color: #6b7280;
+  font-weight: 500;
+}
+
+.notesCell {
+  max-width: 250px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  padding: 0.75rem 1rem;
+  font-style: italic;
+  color: #4b5563;
+}
+
+/* أزرار الإجراءات */
+.actionsCell {
+  display: flex !important;
+  flex-direction: row !important;
+  gap: 0.5rem !important;
+  justify-content: center !important;
+  align-items: center !important;
+  text-align: center !important;
+  vertical-align: middle !important;
+  white-space: nowrap !important;
+  padding: 1rem !important;
+  width: auto !important;
+  min-width: 180px !important;
+}
+
+.actionButton {
+  padding: 0.5rem 0.75rem !important;
+  font-size: 0.75rem !important;
+  font-weight: 600 !important;
+  border-radius: 6px !important;
+  border: 1px solid transparent !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+  text-decoration: none !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 0.25rem !important;
+  min-width: 75px !important;
+  max-width: 85px !important;
+  text-align: center !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;
+  flex-shrink: 0 !important;
+}
+
+.editButton {
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  color: white;
+  border-color: #1d4ed8;
+}
+
+.editButton:hover {
+  background: linear-gradient(135deg, #1d4ed8, #1e40af);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+  border-color: #1e40af;
+}
+
+.deleteButton {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  color: white;
+  border-color: #b91c1c;
+}
+
+.deleteButton:hover {
+  background: linear-gradient(135deg, #dc2626, #b91c1c);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
+  border-color: #991b1b;
+}
+
+/* حالة الجدول الفارغ */
+.emptyState {
+  text-align: center;
+  padding: 4rem 2rem;
+  color: #6b7280;
+  background: linear-gradient(135deg, #f9fafb, #f3f4f6);
+  border: 2px dashed #d1d5db;
+  border-radius: 12px;
+  margin: 2rem;
+}
+
+.emptyIcon {
+  font-size: 5rem;
+  margin-bottom: 1.5rem;
+  opacity: 0.7;
+}
+
+.emptyMessage {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #374151;
+}
+
+/* إحصائيات الجدول */
+.tableStats {
+  padding: 1.5rem 2rem;
+  background: linear-gradient(135deg, #e5e7eb, #d1d5db);
+  border-top: 3px solid #9ca3af;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.statsLabel {
+  color: #374151;
+  font-weight: 700;
+  font-size: 1rem;
+}
+
+.statsValue {
+  font-weight: 800;
+  color: #111827;
+  font-size: 1.1rem;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  background-color: white;
+  border: 2px solid #d1d5db;
+}
+
+.statsValue.positive {
+  color: #059669;
+  background-color: #ecfdf5;
+  border-color: #10b981;
+}
+
+.statsValue.negative {
+  color: #dc2626;
+  background-color: #fef2f2;
+  border-color: #ef4444;
+}
+
+.statsValue.purple {
+  color: #7c3aed;
+  background-color: #f3e8ff;
+  border-color: #8b5cf6;
+}
+
+/* التمرير الأفقي */
+.tableWrapper {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border-radius: 0 0 8px 8px;
+}
+
+.tableWrapper::-webkit-scrollbar {
+  height: 8px;
+}
+
+.tableWrapper::-webkit-scrollbar-track {
+  background: #f3f4f6;
+  border-radius: 4px;
+}
+
+.tableWrapper::-webkit-scrollbar-thumb {
+  background: #d1d5db;
+  border-radius: 4px;
+}
+
+.tableWrapper::-webkit-scrollbar-thumb:hover {
+  background: #9ca3af;
+}
+
+/* التوافق مع الشاشات الصغيرة */
+@media (max-width: 768px) {
+  .tableContainer {
+    margin: 0 0.5rem 1rem 0.5rem;
+  }
+
+  .tableHeader {
+    padding: 1rem;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+
+  .table {
+    font-size: 0.8rem;
+  }
+
+  .tableHeadCell,
+  .tableCell {
+    padding: 0.75rem 0.5rem;
+    font-size: 0.8rem;
+  }
+
+  .actionsCell {
+    flex-direction: column !important;
+    gap: 0.5rem !important;
+    padding: 0.75rem !important;
+    width: auto !important;
+    min-width: auto !important;
+  }
+
+  .actionButton {
+    padding: 0.375rem 0.5rem !important;
+    font-size: 0.7rem !important;
+    min-width: 65px !important;
+    max-width: 75px !important;
+    width: 100% !important;
+  }
+
+  .tableStats {
+    padding: 1rem;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+}
+
+@media (max-width: 480px) {
+  .tableContainer {
+    margin: 0 0.25rem 1rem 0.25rem;
+    border-radius: 6px;
+  }
+
+  .tableHeader {
+    padding: 0.75rem;
+  }
+
+  .tableTitle {
+    font-size: 1rem;
+  }
+
+  .tableIcon {
+    width: 2rem;
+    height: 2rem;
+    font-size: 1rem;
+  }
+
+  .table {
+    font-size: 0.75rem;
+  }
+
+  .tableHeadCell,
+  .tableCell {
+    padding: 0.5rem 0.25rem;
+    font-size: 0.75rem;
+  }
+
+  .actionButton {
+    padding: 0.25rem 0.375rem !important;
+    font-size: 0.65rem !important;
+    min-width: 55px !important;
+    max-width: 65px !important;
+  }
+
+  .actionsCell {
+    width: auto !important;
+    min-width: auto !important;
+    padding: 0.5rem !important;
+  }
+
+  .emptyState {
+    padding: 2rem 1rem;
+    margin: 1rem;
+  }
+
+  .emptyIcon {
+    font-size: 3rem;
+  }
+
+  .emptyMessage {
+    font-size: 1rem;
+  }
+}
+
+/* تأثيرات التحميل للجداول */
+.tableLoading {
+  padding: 2rem;
+  text-align: center;
+}
+
+.loadingSpinner {
+  width: 2rem;
+  height: 2rem;
+  border: 2px solid #e2e8f0;
+  border-top: 2px solid #3b82f6;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 1rem;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* تحسينات إضافية */
+.highlightRow {
+  background: linear-gradient(135deg, #fef3c7, #fde68a) !important;
+  border: 1px solid #f59e0b;
+}
+
+.newRow {
+  animation: slideIn 0.5s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

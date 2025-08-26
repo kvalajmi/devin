@@ -1,0 +1,496 @@
+/* تصميم صفحة تفاصيل العميل المحسّن */
+
+/* تخطيط صفحة تفاصيل العميل - نفس تخطيط صفحة المستثمر */
+.fullScreenContainer {
+  min-height: 100vh;
+  width: 100%;
+  margin: 0;
+  padding: clamp(1rem, 3vw, 3rem);
+  padding-right: clamp(2rem, 5vw, 5rem);
+  background-color: #f9fafb;
+  box-sizing: border-box;
+  overflow-x: hidden;
+}
+
+.contentWrapper {
+  width: 100%;
+  max-width: min(1400px, 95vw);
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1rem, 2vw, 1.5rem);
+  padding-right: clamp(1rem, 3vw, 2rem);
+  padding-left: clamp(0.5rem, 2vw, 1rem);
+}
+
+/* بطاقات المعلومات المحسّنة */
+.infoCard {
+  background: white;
+  border-radius: clamp(0.5rem, 1vw, 0.75rem);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e5e7eb;
+  padding: clamp(1rem, 3vw, 2rem);
+  padding-right: clamp(1.5rem, 4vw, 2.5rem);
+  width: 100%;
+  margin-bottom: clamp(0.25rem, 1vw, 0.5rem);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.infoCard::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #3b82f6, #1d4ed8);
+  border-radius: clamp(0.5rem, 1vw, 0.75rem) clamp(0.5rem, 1vw, 0.75rem) 0 0;
+}
+
+.infoCard:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+}
+
+/* رأس البطاقة */
+.cardHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: clamp(1rem, 2vw, 1.5rem);
+  padding-bottom: 1rem;
+  border-bottom: 2px solid #f1f5f9;
+}
+
+.cardTitle {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: clamp(1.125rem, 2.5vw, 1.25rem);
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.cardIcon {
+  width: 2rem;
+  height: 2rem;
+  padding: 0.5rem;
+  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+  color: white;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+}
+
+/* شبكة المعلومات */
+.infoGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(250px, 100%), 1fr));
+  gap: clamp(1rem, 2vw, 1.5rem);
+}
+
+/* رأس الصفحة مع اسم المستثمر */
+.pageHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+  padding: 1.5rem 2rem;
+  background: linear-gradient(135deg, #f8fafc, #f1f5f9);
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.backButton {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #3b82f6;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  border: 1px solid transparent;
+}
+
+.backButton:hover {
+  color: #1d4ed8;
+  background: white;
+  border-color: #e2e8f0;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.1);
+}
+
+.investorInfo {
+  text-align: left;
+  direction: ltr;
+}
+
+.investorLabel {
+  font-size: 0.875rem;
+  color: #6b7280;
+  font-weight: 500;
+  margin-bottom: 0.25rem;
+}
+
+.investorName {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #111827;
+  margin-bottom: 0.25rem;
+}
+
+.partnerName {
+  font-size: 0.875rem;
+  color: #4b5563;
+  font-weight: 500;
+}
+
+/* شبكة البطاقات الرئيسية - جنباً إلى جنب */
+.cardsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(400px, 100%), 1fr));
+  gap: clamp(1rem, 2vw, 1.5rem);
+  width: 100%;
+}
+
+.infoItem {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.infoLabel {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+}
+
+.infoValue {
+  font-size: clamp(0.875rem, 2vw, 1rem);
+  font-weight: 600;
+  color: #1e293b;
+  padding: 0.75rem;
+  background: #f8fafc;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+  transition: all 0.2s ease;
+}
+
+.infoValue:hover {
+  background: #f1f5f9;
+  border-color: #cbd5e1;
+}
+
+/* الأزرار المحسّنة */
+.actionButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: clamp(0.5rem, 1.5vw, 0.75rem) clamp(1rem, 2.5vw, 1.5rem);
+  font-size: clamp(0.75rem, 1.5vw, 0.875rem);
+  font-weight: 600;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  min-width: fit-content;
+}
+
+.primaryButton {
+  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+  color: white;
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
+}
+
+.primaryButton:hover {
+  background: linear-gradient(135deg, #1d4ed8, #1e40af);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+}
+
+.secondaryButton {
+  background: #f8fafc;
+  color: #475569;
+  border: 1px solid #e2e8f0;
+}
+
+.secondaryButton:hover {
+  background: #f1f5f9;
+  border-color: #cbd5e1;
+  transform: translateY(-1px);
+}
+
+.dangerButton {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  color: white;
+  box-shadow: 0 2px 8px rgba(239, 68, 68, 0.3);
+}
+
+.dangerButton:hover {
+  background: linear-gradient(135deg, #dc2626, #b91c1c);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
+}
+
+/* مجموعة الأزرار */
+.buttonGroup {
+  display: flex;
+  gap: clamp(0.75rem, 2vw, 1rem);
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-start;
+  margin-top: 0.5rem;
+}
+
+/* الإحصائيات */
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(220px, 100%), 1fr));
+  gap: clamp(1rem, 2vw, 1.5rem);
+  margin-top: 1rem;
+}
+
+.statCard {
+  background: linear-gradient(135deg, #f8fafc, #f1f5f9);
+  padding: clamp(1rem, 2vw, 1.5rem);
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.statCard:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+.statValue {
+  font-size: clamp(1.25rem, 3vw, 1.75rem);
+  font-weight: 800;
+  color: #1e293b;
+  margin-bottom: 0.25rem;
+}
+
+.statLabel {
+  font-size: clamp(0.75rem, 1.5vw, 0.875rem);
+  color: #64748b;
+  font-weight: 500;
+}
+
+/* ألوان الإحصائيات */
+.statCard.success .statValue { color: #059669; }
+.statCard.warning .statValue { color: #d97706; }
+.statCard.danger .statValue { color: #dc2626; }
+.statCard.info .statValue { color: #0284c7; }
+
+/* شريط التقدم */
+.progressBar {
+  width: 100%;
+  height: 8px;
+  background: #e2e8f0;
+  border-radius: 4px;
+  overflow: hidden;
+  margin: 1rem 0;
+}
+
+.progressFill {
+  height: 100%;
+  background: linear-gradient(90deg, #10b981, #059669);
+  border-radius: 4px;
+  transition: width 0.5s ease;
+}
+
+/* تحسينات للشاشات الصغيرة والمتوسطة */
+@media (max-width: 1024px) {
+  .cardsGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .fullScreenContainer {
+    padding-right: clamp(1.5rem, 4vw, 3rem);
+  }
+}
+
+/* تحسينات للشاشات الكبيرة جداً */
+@media (min-width: 1400px) {
+  .contentWrapper {
+    max-width: 1600px;
+  }
+}
+
+/* تحسينات للشاشات الصغيرة */
+@media (max-width: 768px) {
+  .fullScreenContainer {
+    padding: clamp(1rem, 3vw, 1.5rem);
+    padding-right: clamp(1.5rem, 4vw, 2rem);
+  }
+
+  .contentWrapper {
+    max-width: 100%;
+    padding-right: clamp(0.5rem, 2vw, 1rem);
+    padding-left: clamp(0.25rem, 1vw, 0.5rem);
+  }
+
+  .pageHeader {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1rem;
+  }
+
+  .investorInfo {
+    text-align: right;
+    direction: rtl;
+    width: 100%;
+  }
+
+  .investorName {
+    font-size: 1.25rem;
+  }
+
+  .infoGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .cardsGrid {
+    grid-template-columns: 1fr;
+    gap: clamp(0.75rem, 2vw, 1rem);
+  }
+
+  .buttonGroup {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .actionButton {
+    justify-content: center;
+  }
+
+  .cardHeader {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+}
+
+/* تحسينات إضافية للتباعد المتوازن */
+@media (min-width: 480px) and (max-width: 767px) {
+  .fullScreenContainer {
+    padding: 1.5rem 1rem;
+    padding-right: 2.5rem;
+  }
+
+  .contentWrapper {
+    padding-right: 1.5rem;
+    padding-left: 0.75rem;
+  }
+}
+
+/* تحسينات للشاشات الكبيرة جداً */
+@media (min-width: 1920px) {
+  .fullScreenContainer {
+    padding-right: clamp(4rem, 6vw, 8rem);
+  }
+
+  .contentWrapper {
+    max-width: 1800px;
+  }
+}
+
+@media (max-width: 480px) {
+  .statsGrid {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+
+  .infoCard {
+    padding: 1rem;
+  }
+
+  .statCard {
+    padding: 1rem;
+  }
+
+  .statValue {
+    font-size: 1.125rem;
+  }
+
+  .statLabel {
+    font-size: 0.75rem;
+    line-height: 1.2;
+  }
+}
+
+/* تحسينات إضافية للنصوص العربية */
+.arabicText {
+  direction: rtl;
+  text-align: right;
+  font-family: 'Noto Sans Arabic', sans-serif;
+}
+
+/* تأثيرات التحميل */
+.loadingShimmer {
+  background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+/* إطار الملخص المالي */
+.financialSummaryContainer {
+  margin-bottom: 2rem;
+}
+
+.financialSummaryFrame {
+  background: #ffffff;
+  border: 2px solid #e5e7eb;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+}
+
+.financialSummaryHeader {
+  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+  color: white;
+  padding: 1rem 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.summaryIcon {
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+}
+
+.summaryTitle {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 0;
+  color: white;
+}
+
+.financialSummaryContent {
+  padding: 1.5rem;
+}

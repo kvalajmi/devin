@@ -1,0 +1,401 @@
+/* تخطيط صفحة تفاصيل المستثمر - ملء الشاشة */
+
+.fullScreenContainer {
+  min-height: 100vh;
+  width: 100%;
+  margin: 0;
+  padding: clamp(1rem, 3vw, 3rem);
+  padding-right: clamp(2rem, 5vw, 5rem);
+  background-color: #f9fafb;
+  box-sizing: border-box;
+  overflow-x: hidden;
+}
+
+.contentWrapper {
+  width: 100%;
+  max-width: min(1400px, 95vw);
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1rem, 2vw, 1.5rem);
+  padding-right: clamp(1rem, 3vw, 2rem);
+  padding-left: clamp(0.5rem, 2vw, 1rem);
+}
+
+.headerCard {
+  background: white;
+  border-radius: clamp(0.5rem, 1vw, 0.75rem);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e5e7eb;
+  padding: clamp(1rem, 3vw, 2rem);
+  padding-right: clamp(1.5rem, 4vw, 2.5rem);
+  width: 100%;
+  margin-bottom: clamp(0.25rem, 1vw, 0.5rem);
+}
+
+.cardsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(400px, 100%), 1fr));
+  gap: clamp(1rem, 2vw, 1.5rem);
+  width: 100%;
+}
+
+.cardContainer {
+  height: 100%;
+  min-height: clamp(300px, 40vh, 400px);
+}
+
+.tablesSection {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1rem, 2vw, 1.5rem);
+  width: 100%;
+}
+
+.fundingTableContainer {
+  width: 100%;
+}
+
+.withdrawalsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(350px, 100%), 1fr));
+  gap: clamp(1rem, 2vw, 1.5rem);
+  width: 100%;
+}
+
+.withdrawalTableContainer {
+  height: 100%;
+  min-height: clamp(250px, 30vh, 300px);
+}
+
+/* تحسينات للشاشات الصغيرة والمتوسطة */
+@media (max-width: 1024px) {
+  .cardsGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .withdrawalsGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .fullScreenContainer {
+    padding-right: clamp(1.5rem, 4vw, 3rem);
+  }
+}
+
+/* تحسينات للشاشات الكبيرة جداً */
+@media (min-width: 1400px) {
+  .contentWrapper {
+    max-width: 1600px;
+  }
+}
+
+/* تحسينات للشاشات الصغيرة */
+@media (max-width: 768px) {
+  .fullScreenContainer {
+    padding: clamp(1rem, 3vw, 1.5rem);
+    padding-right: clamp(1.5rem, 4vw, 2rem);
+  }
+
+  .contentWrapper {
+    max-width: 100%;
+    padding-right: clamp(0.5rem, 2vw, 1rem);
+    padding-left: clamp(0.25rem, 1vw, 0.5rem);
+  }
+
+  .headerCard {
+    padding: clamp(0.75rem, 2vw, 1rem);
+    padding-right: clamp(1rem, 3vw, 1.5rem);
+  }
+
+  .cardsGrid,
+  .withdrawalsGrid {
+    grid-template-columns: 1fr;
+    gap: clamp(0.75rem, 2vw, 1rem);
+  }
+
+  .cardsGrid,
+  .withdrawalsGrid {
+    gap: 1rem;
+  }
+  
+  .tableContainer {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  .tableContainer table {
+    min-width: 500px;
+  }
+  
+  .withdrawalTableContainer table {
+    min-width: 400px;
+  }
+  
+  .fundingTableContainer table {
+    min-width: 600px;
+  }
+}
+
+/* تحسينات للجداول */
+.tableContainer {
+  width: 100%;
+  overflow-x: auto;
+  border-radius: clamp(0.375rem, 1vw, 0.5rem);
+  border: 1px solid #e5e7eb;
+  background: white;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+  -webkit-overflow-scrolling: touch;
+}
+
+.tableContainer table {
+  width: 100%;
+  min-width: clamp(500px, 80vw, 600px);
+  border-collapse: collapse;
+  margin: 0;
+}
+
+.tableContainer table th,
+.tableContainer table td {
+  border: 1px solid #e5e7eb;
+  padding: clamp(0.5rem, 1.5vw, 0.75rem);
+  text-align: right;
+  white-space: nowrap;
+  font-size: clamp(0.75rem, 1.5vw, 0.875rem);
+}
+
+.tableContainer table th {
+  background-color: #f9fafb;
+  font-weight: 600;
+  color: #374151;
+  border-bottom: 2px solid #d1d5db;
+}
+
+.tableContainer table tr:nth-child(even) {
+  background-color: #f9fafb;
+}
+
+.tableContainer table tr:hover {
+  background-color: #f3f4f6;
+}
+
+/* تحسينات خاصة لجداول المسحوبات */
+.withdrawalTableContainer {
+  height: 100%;
+  min-height: 300px;
+  overflow: hidden;
+  border-radius: 0.5rem;
+  border: 1px solid #e5e7eb;
+  background: white;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+}
+
+.withdrawalTableContainer .tableContainer {
+  border: none;
+  box-shadow: none;
+  height: 100%;
+}
+
+.withdrawalTableContainer table {
+  height: 100%;
+  min-width: 500px;
+}
+
+/* تحسينات لجدول التمويل */
+.fundingTableContainer {
+  width: 100%;
+  overflow: hidden;
+  border-radius: 0.5rem;
+  border: 1px solid #e5e7eb;
+  background: white;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+}
+
+.fundingTableContainer .tableContainer {
+  border: none;
+  box-shadow: none;
+  height: 100%;
+}
+
+.fundingTableContainer table {
+  min-width: 700px;
+}
+
+/* تحسينات إضافية لضمان عدم خروج الجداول عن الإطار */
+.tablesSection {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+.withdrawalsGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+/* تحسينات للحدود اليسرى */
+.tableContainer table th:first-child,
+.tableContainer table td:first-child {
+  border-left: 2px solid #d1d5db;
+}
+
+.tableContainer table th:last-child,
+.tableContainer table td:last-child {
+  border-right: 2px solid #d1d5db;
+}
+
+/* تحسينات للشاشات الصغيرة جداً */
+@media (max-width: 480px) {
+  .tableContainer table {
+    min-width: clamp(400px, 90vw, 500px);
+    font-size: 0.75rem;
+  }
+
+  .tableContainer table th,
+  .tableContainer table td {
+    padding: clamp(0.375rem, 1vw, 0.5rem);
+    font-size: clamp(0.6875rem, 1.2vw, 0.75rem);
+  }
+
+  .withdrawalTableContainer table {
+    min-width: clamp(350px, 85vw, 400px);
+  }
+
+  .fundingTableContainer table {
+    min-width: clamp(450px, 95vw, 500px);
+  }
+
+  .cardContainer {
+    min-height: clamp(250px, 35vh, 300px);
+  }
+}
+
+/* تحسينات للبطاقات */
+.balanceCard {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.balanceCardContent {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.infoCard {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.infoCardContent {
+  flex: 1;
+}
+
+/* تحسينات للنماذج */
+.formContainer {
+  background: white;
+  border-radius: clamp(0.375rem, 1vw, 0.5rem);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e5e7eb;
+  padding: clamp(1rem, 3vw, 1.5rem);
+  width: 100%;
+}
+
+.formGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(250px, 100%), 1fr));
+  gap: clamp(1rem, 2vw, 1.5rem);
+}
+
+/* تحسينات للأزرار */
+.buttonGroup {
+  display: flex;
+  gap: clamp(0.5rem, 1.5vw, 0.75rem);
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.primaryButton {
+  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+  color: white;
+  padding: clamp(0.5rem, 1.5vw, 0.75rem) clamp(1rem, 3vw, 1.5rem);
+  border-radius: clamp(0.375rem, 1vw, 0.5rem);
+  font-weight: 600;
+  font-size: clamp(0.75rem, 1.5vw, 0.875rem);
+  transition: all 0.2s;
+  border: none;
+  cursor: pointer;
+  min-width: fit-content;
+}
+
+.primaryButton:hover {
+  background: linear-gradient(135deg, #1d4ed8, #1e40af);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+}
+
+.secondaryButton {
+  background: #6b7280;
+  color: white;
+  padding: clamp(0.5rem, 1.5vw, 0.75rem) clamp(1rem, 3vw, 1.5rem);
+  border-radius: clamp(0.375rem, 1vw, 0.5rem);
+  font-weight: 600;
+  font-size: clamp(0.75rem, 1.5vw, 0.875rem);
+  transition: all 0.2s;
+  border: none;
+  cursor: pointer;
+  min-width: fit-content;
+}
+
+.secondaryButton:hover {
+  background: #4b5563;
+  transform: translateY(-1px);
+}
+
+/* تحسينات للإحصائيات */
+.statsContainer {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(200px, 100%), 1fr));
+  gap: clamp(0.75rem, 2vw, 1rem);
+  margin-top: clamp(0.75rem, 2vw, 1rem);
+}
+
+.statCard {
+  background: #f8fafc;
+  padding: clamp(0.75rem, 2vw, 1rem);
+  border-radius: clamp(0.375rem, 1vw, 0.5rem);
+  border: 1px solid #e2e8f0;
+  text-align: center;
+}
+
+.statValue {
+  font-size: clamp(1.125rem, 3vw, 1.5rem);
+  font-weight: bold;
+  color: #1e293b;
+}
+
+.statLabel {
+  font-size: clamp(0.75rem, 1.5vw, 0.875rem);
+  color: #64748b;
+  margin-top: clamp(0.125rem, 0.5vw, 0.25rem);
+}
+
+/* تحسينات إضافية للتوافق مع الشاشات الكبيرة جداً */
+@media (min-width: 1920px) {
+  .fullScreenContainer {
+    padding-right: clamp(4rem, 6vw, 8rem);
+  }
+
+  .contentWrapper {
+    max-width: 1800px;
+  }
+}
