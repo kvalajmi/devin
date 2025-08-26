@@ -24,8 +24,18 @@ const AddInvestorForm: React.FC<AddInvestorFormProps> = ({ onAdd, onCancel }) =>
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     
-    if (!newInvestor.investorName || !newInvestor.civilId) {
+    if (!newInvestor.investorName || !newInvestor.civilId || !newInvestor.partnerName) {
       showNotification('error', 'يرجى ملء جميع الحقول المطلوبة')
+      return
+    }
+
+    if (newInvestor.civilId.length !== 12) {
+      showNotification('error', 'الرقم المدني يجب أن يكون 12 رقم بالضبط')
+      return
+    }
+
+    if (!/^\d{12}$/.test(newInvestor.civilId)) {
+      showNotification('error', 'الرقم المدني يجب أن يحتوي على أرقام فقط')
       return
     }
 
@@ -104,9 +114,14 @@ const AddInvestorForm: React.FC<AddInvestorFormProps> = ({ onAdd, onCancel }) =>
                   setNewInvestor({...newInvestor, civilId: value});
                 }
               }}
-              className="input-field"
+              className={`input-field ${newInvestor.civilId.length > 0 && newInvestor.civilId.length !== 12 ? 'border-red-500' : ''}`}
               placeholder="أدخل الرقم المدني (12 رقم)"
             />
+            {newInvestor.civilId.length > 0 && newInvestor.civilId.length !== 12 && (
+              <p className="text-red-500 text-sm mt-1">
+                الرقم المدني يجب أن يكون 12 رقم بالضبط (حالياً: {newInvestor.civilId.length} رقم)
+              </p>
+            )}
           </div>
 
           <div>

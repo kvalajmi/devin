@@ -39,23 +39,33 @@ export const useInvestorProfitTracking = (investorId: number) => {
       const investorClients = clients.filter(client => client.investor_id === investorId)
       const clientIds = investorClients.map(client => client.id)
 
+      console.log(`Debug: Investor ${investorId} has ${investorClients.length} clients`)
+      console.log('Debug: All clients:', clients.map(c => ({ id: c.id, name: c.name, investor_id: c.investor_id })))
+      console.log('Debug: Filtered investor clients:', investorClients.map(c => ({ id: c.id, name: c.name })))
+
       let totalCollectedProfit = 0
 
       for (const client of investorClients) {
-        const clientPayments = payments.filter(payment => payment.clientId === client.id)
+        const clientPayments = payments.filter(payment => payment.client_id === client.id)
         const totalPaid = clientPayments.reduce((sum, payment) => sum + payment.amount, 0)
         const loanAmount = client.loan_amount || 0
         
+        console.log(`Debug: Client ${client.name}: totalPaid=${totalPaid}, loanAmount=${loanAmount}`)
+        
         const collectedProfit = totalPaid > loanAmount ? totalPaid - loanAmount : 0
         totalCollectedProfit += collectedProfit
+        
+        console.log(`Debug: Client ${client.name} profit: ${collectedProfit}`)
       }
+      
+      console.log(`Debug: Total collected profit: ${totalCollectedProfit}`)
 
       const totalExpenses = expenses
-        .filter(expense => clientIds.includes(expense.clientId))
+        .filter(expense => clientIds.includes(expense.client_id))
         .reduce((sum, expense) => sum + expense.amount, 0)
 
       const totalLawyerFeesAmount = lawyerFees
-        .filter(fee => clientIds.includes(fee.clientId))
+        .filter(fee => clientIds.includes(fee.client_id))
         .reduce((sum, fee) => sum + fee.amount, 0)
 
       const netCollectedProfit = totalCollectedProfit - totalExpenses - totalLawyerFeesAmount

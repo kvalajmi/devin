@@ -1,6 +1,7 @@
 import React from 'react'
 import { useConfirmationContext } from '../../components/ConfirmationProvider'
 import { createDeleteConfirm } from '../../utils/confirmation-helpers'
+import { formatDateTime } from '../Investors/utils/formatters'
 import styles from './Tables.module.css'
 
 interface Expense {
@@ -84,13 +85,7 @@ const ExpensesTable: React.FC<ExpensesTableProps> = ({
                   <td className={`${styles.tableCell} ${styles.userCell}`}>
                     <div className={styles.userName}>{expense.entryUser}</div>
                     <div className={styles.userDateTime}>
-                      {new Date(expense.entryDateTime).toLocaleString('ar-SA', {
-                        year: 'numeric',
-                        month: 'short',
-                        day: 'numeric',
-                        hour: '2-digit',
-                        minute: '2-digit'
-                      })}
+                      {formatDateTime(expense.entryDateTime)}
                     </div>
                   </td>
                   <td className={styles.tableCell}>{expense.description}</td>

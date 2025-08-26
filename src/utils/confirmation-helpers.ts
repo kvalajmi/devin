@@ -10,7 +10,7 @@ export const ConfirmationHelpers = {
       message += `\nالمبلغ: ${amount.toLocaleString()} د.ك`
     }
     
-    return window.confirm(message)
+    return false // Deprecated - use ConfirmationProvider instead
   }
 }
 

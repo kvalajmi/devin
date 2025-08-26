@@ -58,25 +58,33 @@ export const formatDate = (dateString: string | Date): string => {
  * تنسيق التاريخ والوقت بالتقويم الميلادي - أرقام إنجليزية فقط
  */
 export const formatDateTime = (dateString: string | Date): string => {
+  if (!dateString) return ''
   const date = typeof dateString === 'string' ? new Date(dateString) : dateString
-  return date.toLocaleDateString('en-GB', {
-    day: '2-digit',
-    month: '2-digit',
-    year: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit'
-  })
+  
+  if (isNaN(date.getTime())) return ''
+  
+  const day = date.getDate().toString().padStart(2, '0')
+  const month = (date.getMonth() + 1).toString().padStart(2, '0')
+  const year = date.getFullYear().toString()
+  const hours = date.getHours().toString().padStart(2, '0')
+  const minutes = date.getMinutes().toString().padStart(2, '0')
+  
+  return `${day}/${month}/${year} ${hours}:${minutes}`
 }
 
 /**
  * تنسيق التاريخ بصيغة مختصرة (MM/YYYY) - أرقام إنجليزية فقط
  */
 export const formatDateShort = (dateString: string | Date): string => {
+  if (!dateString) return ''
   const date = typeof dateString === 'string' ? new Date(dateString) : dateString
-  return date.toLocaleDateString('en-GB', {
-    month: '2-digit',
-    year: 'numeric'
-  })
+  
+  if (isNaN(date.getTime())) return ''
+  
+  const month = (date.getMonth() + 1).toString().padStart(2, '0')
+  const year = date.getFullYear().toString()
+  
+  return `${month}/${year}`
 }
 
 /**

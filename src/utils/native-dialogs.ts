@@ -47,12 +47,12 @@ export async function showNativeConfirm(options: ConfirmDialogOptions): Promise<
     } catch (error) {
       console.error('فشل في عرض حوار التأكيد الأصلي:', error);
       // Fall back to browser dialog
-      return window.confirm(options.message);
+      return false; // Deprecated - use ConfirmationProvider instead
     }
   }
   
   // Fallback to browser confirm
-  return window.confirm(options.message);
+  return false; // Deprecated - use ConfirmationProvider instead
 }
 
 /**
@@ -68,13 +68,13 @@ export async function showNativeAlert(options: AlertDialogOptions): Promise<void
     } catch (error) {
       console.error('فشل في عرض حوار التنبيه الأصلي:', error);
       // Fall back to browser alert
-      window.alert(options.message);
+      console.log('Alert (deprecated):', options.message); // Use notification system instead
       return;
     }
   }
   
   // Fallback to browser alert
-  window.alert(options.message);
+  console.log('Alert (deprecated):', options.message); // Use notification system instead
 }
 
 /**
@@ -90,13 +90,13 @@ export async function showNativeError(options: ErrorDialogOptions): Promise<void
     } catch (error) {
       console.error('فشل في عرض حوار الخطأ الأصلي:', error);
       // Fall back to browser alert
-      window.alert(`خطأ: ${options.message}`);
+      console.error('Error (deprecated):', options.message); // Use notification system instead
       return;
     }
   }
   
   // Fallback to browser alert
-  window.alert(`خطأ: ${options.message}`);
+  console.error('Error (deprecated):', options.message); // Use notification system instead
 }
 
 /**
