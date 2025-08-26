@@ -99,7 +99,7 @@ export const ClientStatsDisplay: React.FC<ClientStatsDisplayProps> = ({ stats })
               <div className={styles.statIcon}>💎</div>
               <div className={styles.statContent}>
                 <div className={styles.statValue}>{collectedNetProfit.toLocaleString('en-US')} د.ك</div>
-                <div className={styles.statLabel}>صافي الربح المحصل</div>
+                <div className={styles.statLabel}>الربح الصافي المحصل</div>
               </div>
             </div>
           </div>
@@ -143,3 +143,5 @@ export const ClientStatsDisplay: React.FC<ClientStatsDisplayProps> = ({ stats })
     </div>
   )
 }
+
+export default ClientStatsDisplay
