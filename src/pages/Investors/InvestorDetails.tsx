@@ -165,10 +165,6 @@ const InvestorDetails: React.FC<InvestorDetailsProps> = ({
 
             <PartnerInfoForm
               investor={investor}
-              formData={formData}
-              isEditing={isEditing}
-              isLoading={isLoading}
-              onInputChange={handleInputChange}
             />
 
             <DistributionRatiosDisplay
