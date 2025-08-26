@@ -1,5 +1,5 @@
 import React from 'react'
-import ArabicNumberInput from './ArabicNumberInput'
+import GlobalArabicNumberInput from './GlobalArabicNumberInput'
 
 interface NewExpense {
   amount: string
@@ -37,11 +37,12 @@ const ExpenseFormModal: React.FC<ExpenseFormModalProps> = ({
           
           <div className="space-y-4">
             <div>
-              <ArabicNumberInput
-                label="المبلغ (د.ك)"
+              <label className="block text-sm font-medium text-gray-700 mb-2">المبلغ (د.ك)</label>
+              <GlobalArabicNumberInput
                 value={newExpense.amount}
                 onChange={(value) => setNewExpense({...newExpense, amount: value})}
                 placeholder="أدخل مبلغ المصروف"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"
               />
             </div>
 

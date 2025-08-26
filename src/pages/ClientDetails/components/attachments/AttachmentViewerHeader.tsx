@@ -1,5 +1,6 @@
 import React from 'react'
 import { FileUtils } from './FileUtils'
+import { formatDate } from '../../../Investors/utils/formatters'
 
 interface AttachmentFile {
   id: number
@@ -79,7 +80,7 @@ const AttachmentViewerHeader: React.FC<AttachmentViewerHeaderProps> = ({
           <div className="flex items-center gap-2 text-sm text-gray-500">
             <span>{FileUtils.formatFileSize(attachment.fileSize)}</span>
             <span>•</span>
-            <span>{new Date(attachment.uploadDate).toLocaleDateString('ar-SA')}</span>
+            <span>{formatDate(attachment.uploadDate)}</span>
           </div>
         </div>
       </div>

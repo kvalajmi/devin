@@ -29,7 +29,7 @@ const AddWithdrawalForm: React.FC<AddWithdrawalFormProps> = ({
 
   const handleSubmit = async () => {
     if (!formData.amount || !formData.date) {
-      alert('يرجى ملء جميع الحقول المطلوبة')
+      console.error('يرجى ملء جميع الحقول المطلوبة')
       return
     }
 
@@ -48,7 +48,7 @@ const AddWithdrawalForm: React.FC<AddWithdrawalFormProps> = ({
         notes: ''
       })
     } catch (error) {
-      alert('حدث خطأ في إضافة السحب')
+      console.error('حدث خطأ في إضافة السحب')
     } finally {
       setIsSubmitting(false)
     }

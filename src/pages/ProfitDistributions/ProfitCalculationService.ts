@@ -90,7 +90,7 @@ export class ProfitCalculationService {
   }
 
   // ===== وظائف مساعدة للتوافق مع الكود القديم =====
-  static saveDistributions(distributions: ProfitDistribution[]) {
+  static saveDistributions(_distributions: ProfitDistribution[]) {
     // يمكن إضافة منطق الحفظ هنا لاحقاً
     return {
       success: true,

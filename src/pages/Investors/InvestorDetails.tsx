@@ -11,6 +11,7 @@ import DistributionRatiosDisplay from './components/DistributionRatiosDisplay'
 // استيراد المكونات المحسّنة الجديدة
 import InvestorBasicInfoCard from './components/enhanced/InvestorBasicInfoCard'
 import InvestorCurrentBalanceCard from './components/enhanced/InvestorCurrentBalanceCard'
+import InvestorProfitTrackingCards from './components/enhanced/InvestorProfitTrackingCards'
 import FundingRecordsTable from './components/enhanced/FundingRecordsTable'
 import InvestorWithdrawalsTable from './components/enhanced/InvestorWithdrawalsTable'
 import PartnerWithdrawalsTable from './components/enhanced/PartnerWithdrawalsTable'
@@ -113,6 +114,9 @@ const InvestorDetails: React.FC<InvestorDetailsProps> = ({
             />
           </div>
 
+          {/* بطاقات تتبع الأرباح */}
+          <InvestorProfitTrackingCards investorId={investor.id} />
+
           {/* الجداول */}
           <div className={styles.tablesSection}>
             {/* جدول كشف التمويل الفعلي - عرض كامل */}
@@ -161,10 +165,6 @@ const InvestorDetails: React.FC<InvestorDetailsProps> = ({
 
             <PartnerInfoForm
               investor={investor}
-              formData={formData}
-              isEditing={isEditing}
-              isLoading={isLoading}
-              onInputChange={handleInputChange}
             />
 
             <DistributionRatiosDisplay

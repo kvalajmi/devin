@@ -37,40 +37,54 @@ export const formatPercentage = (percentage: number, decimals: number = 1): stri
 }
 
 /**
- * تنسيق التاريخ بالتقويم الميلادي (DD/MM/YYYY)
+ * تنسيق التاريخ بالتقويم الميلادي (DD/MM/YYYY) - أرقام إنجليزية فقط
  */
 export const formatDate = (dateString: string | Date): string => {
+  if (!dateString) return ''
   const date = typeof dateString === 'string' ? new Date(dateString) : dateString
-  return date.toLocaleDateString('en-GB', {
-    day: '2-digit',
-    month: '2-digit',
-    year: 'numeric'
-  })
+  
+  // التأكد من صحة التاريخ
+  if (isNaN(date.getTime())) return ''
+  
+  // تنسيق التاريخ بالأرقام الإنجليزية فقط
+  const day = date.getDate().toString().padStart(2, '0')
+  const month = (date.getMonth() + 1).toString().padStart(2, '0')
+  const year = date.getFullYear().toString()
+  
+  return `${day}/${month}/${year}`
 }
 
 /**
- * تنسيق التاريخ والوقت بالتقويم الميلادي
+ * تنسيق التاريخ والوقت بالتقويم الميلادي - أرقام إنجليزية فقط
  */
 export const formatDateTime = (dateString: string | Date): string => {
+  if (!dateString) return ''
   const date = typeof dateString === 'string' ? new Date(dateString) : dateString
-  return date.toLocaleDateString('en-GB', {
-    day: '2-digit',
-    month: '2-digit',
-    year: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit'
-  })
+  
+  if (isNaN(date.getTime())) return ''
+  
+  const day = date.getDate().toString().padStart(2, '0')
+  const month = (date.getMonth() + 1).toString().padStart(2, '0')
+  const year = date.getFullYear().toString()
+  const hours = date.getHours().toString().padStart(2, '0')
+  const minutes = date.getMinutes().toString().padStart(2, '0')
+  
+  return `${day}/${month}/${year} ${hours}:${minutes}`
 }
 
 /**
- * تنسيق التاريخ بصيغة مختصرة (MMM YYYY)
+ * تنسيق التاريخ بصيغة مختصرة (MM/YYYY) - أرقام إنجليزية فقط
  */
 export const formatDateShort = (dateString: string | Date): string => {
+  if (!dateString) return ''
   const date = typeof dateString === 'string' ? new Date(dateString) : dateString
-  return date.toLocaleDateString('en-US', {
-    month: 'short',
-    year: 'numeric'
-  })
+  
+  if (isNaN(date.getTime())) return ''
+  
+  const month = (date.getMonth() + 1).toString().padStart(2, '0')
+  const year = date.getFullYear().toString()
+  
+  return `${month}/${year}`
 }
 
 /**

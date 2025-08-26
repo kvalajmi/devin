@@ -1,5 +1,8 @@
 import React, { useState } from 'react'
+import GlobalArabicNumberInput from '../../components/forms/GlobalArabicNumberInput'
 import { Investor } from './types'
+import { CivilIdValidator } from '../../services/validation/CivilIdValidator'
+import { useGlobalNotifications } from '../../hooks/useGlobalNotifications'
 
 interface AddInvestorFormProps {
   onAdd: (investor: Omit<Investor, 'id'>) => void
@@ -7,6 +10,7 @@ interface AddInvestorFormProps {
 }
 
 const AddInvestorForm: React.FC<AddInvestorFormProps> = ({ onAdd, onCancel }) => {
+  const { showNotification } = useGlobalNotifications()
   const [newInvestor, setNewInvestor] = useState<Omit<Investor, 'id'>>({
     investorName: '',
     partnerName: '',
@@ -17,8 +21,30 @@ const AddInvestorForm: React.FC<AddInvestorFormProps> = ({ onAdd, onCancel }) =>
     joinDate: new Date().toISOString().split('T')[0]
   })
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    
+    if (!newInvestor.investorName || !newInvestor.civilId || !newInvestor.partnerName) {
+      showNotification('error', 'يرجى ملء جميع الحقول المطلوبة')
+      return
+    }
+
+    if (newInvestor.civilId.length !== 12) {
+      showNotification('error', 'الرقم المدني يجب أن يكون 12 رقم بالضبط')
+      return
+    }
+
+    if (!/^\d{12}$/.test(newInvestor.civilId)) {
+      showNotification('error', 'الرقم المدني يجب أن يحتوي على أرقام فقط')
+      return
+    }
+
+    const civilIdValidation = await CivilIdValidator.validateUniqueness(newInvestor.civilId)
+    if (!civilIdValidation.isValid) {
+      showNotification('error', civilIdValidation.message)
+      return
+    }
+
     onAdd(newInvestor)
   }
 
@@ -56,33 +82,15 @@ const AddInvestorForm: React.FC<AddInvestorFormProps> = ({ onAdd, onCancel }) =>
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">نسبة المستثمر (%)</label>
-            <input
+            <GlobalArabicNumberInput
               type="text"
-              inputMode="numeric"
-              value={newInvestor.investorPercentage}
-              onChange={(e) => {
-                const value = e.target.value;
-                // تحويل الأرقام العربية إلى إنجليزية
-                const englishValue = value
-                  .replace(/٠/g, '0')
-                  .replace(/١/g, '1')
-                  .replace(/٢/g, '2')
-                  .replace(/٣/g, '3')
-                  .replace(/٤/g, '4')
-                  .replace(/٥/g, '5')
-                  .replace(/٦/g, '6')
-                  .replace(/٧/g, '7')
-                  .replace(/٨/g, '8')
-                  .replace(/٩/g, '9');
-                
-                // التحقق من أن القيمة رقمية فقط
-                if (/^\d*$/.test(englishValue)) {
-                  setNewInvestor({...newInvestor, investorPercentage: Number(englishValue)});
-                }
+              value={newInvestor.investorPercentage.toString()}
+              onChange={(value) => {
+                const numValue = parseInt(value) || 0;
+                setNewInvestor({...newInvestor, investorPercentage: numValue});
               }}
               className="input-field"
               placeholder="50"
-              required
             />
           </div>
 
@@ -97,35 +105,23 @@ const AddInvestorForm: React.FC<AddInvestorFormProps> = ({ onAdd, onCancel }) =>
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">الرقم المدني</label>
-            <input
+            <label className="block text-sm font-medium text-gray-700 mb-2">الرقم المدني (12 رقم)</label>
+            <GlobalArabicNumberInput
               type="text"
-              maxLength={12}
               value={newInvestor.civilId}
-              onChange={(e) => {
-                const value = e.target.value;
-                // تحويل الأرقام العربية إلى إنجليزية
-                const englishValue = value
-                  .replace(/٠/g, '0')
-                  .replace(/١/g, '1')
-                  .replace(/٢/g, '2')
-                  .replace(/٣/g, '3')
-                  .replace(/٤/g, '4')
-                  .replace(/٥/g, '5')
-                  .replace(/٦/g, '6')
-                  .replace(/٧/g, '7')
-                  .replace(/٨/g, '8')
-                  .replace(/٩/g, '9');
-                
-                // التحقق من أن القيمة رقمية فقط
-                if (/^\d*$/.test(englishValue)) {
-                  setNewInvestor({...newInvestor, civilId: englishValue});
+              onChange={(value) => {
+                if (/^\d*$/.test(value) && value.length <= 12) {
+                  setNewInvestor({...newInvestor, civilId: value});
                 }
               }}
-              className="input-field"
-              placeholder="أدخل الرقم المدني"
-              required
+              className={`input-field ${newInvestor.civilId.length > 0 && newInvestor.civilId.length !== 12 ? 'border-red-500' : ''}`}
+              placeholder="أدخل الرقم المدني (12 رقم)"
             />
+            {newInvestor.civilId.length > 0 && newInvestor.civilId.length !== 12 && (
+              <p className="text-red-500 text-sm mt-1">
+                الرقم المدني يجب أن يكون 12 رقم بالضبط (حالياً: {newInvestor.civilId.length} رقم)
+              </p>
+            )}
           </div>
 
           <div>

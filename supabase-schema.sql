@@ -167,16 +167,18 @@ CREATE TRIGGER update_lawyer_fees_updated_at BEFORE UPDATE ON lawyer_fees FOR EA
 CREATE TRIGGER update_payment_records_updated_at BEFORE UPDATE ON payment_records FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 CREATE TRIGGER update_client_attachments_updated_at BEFORE UPDATE ON client_attachments FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
--- إدراج بيانات تجريبية للعملاء
+-- إدراج بيانات تجريبية للعملاء مع ربطهم بالمستثمر
 INSERT INTO clients (
   name, civil_id, phone_number, pension_date, guarantee, payment_period,
   loan_amount, profit, funding_date, installment_value, first_installment_date,
-  total_amount, total_paid, total_remaining
+  total_amount, total_paid, total_remaining, investor_id, loan_code
 ) VALUES 
-  ('سعد محمد عبد الكريم العتيبي', '296100601597', '56622626', 23, 'عقد بقيمة 2500', 15, 1069.328, 730.672, '7/6/2022', 120, '23/6/2022', 1800, 0, 1800),
-  ('أحمد محمد علي', '296100601598', '56622627', 25, 'عقار', 20, 2000, 1000, '10/6/2022', 150, '25/6/2022', 3000, 300, 2700),
-  ('محمد عبد الله', '296100601599', '56622628', 28, 'سيارة', 18, 1500, 750, '15/6/2022', 125, '30/6/2022', 2250, 250, 2000)
+  ('سعد محمد عبد الكريم العتيبي', '296100601597', '56622626', 23, 'عقد بقيمة 2500', 15, 1069.328, 730.672, '7/6/2022', 120, '23/6/2022', 1800, 0, 1800, 1, '00001'),
+  ('أحمد محمد علي', '296100601598', '56622627', 25, 'عقار', 20, 2000, 1000, '10/6/2022', 150, '25/6/2022', 3000, 300, 2700, 1, '00002'),
+  ('محمد عبد الله', '296100601599', '56622628', 28, 'سيارة', 18, 1500, 750, '15/6/2022', 125, '30/6/2022', 2250, 250, 2000, 1, '00003')
 ON CONFLICT (civil_id) DO NOTHING;
+
+UPDATE clients SET investor_id = 1, loan_code = LPAD(id::text, 5, '0') WHERE investor_id IS NULL;
 
 -- إدراج بيانات تجريبية للمستثمرين
 INSERT INTO investors (
@@ -238,8 +240,20 @@ ALTER TABLE clients ADD COLUMN IF NOT EXISTS transaction_date TIMESTAMP;
 ALTER TABLE clients ADD COLUMN IF NOT EXISTS installment_amount DECIMAL(10,3);
 ALTER TABLE clients ADD COLUMN IF NOT EXISTS first_installment_date TIMESTAMP;
 
+-- إضافة حقل معرف المستثمر لربط العملاء بالمستثمرين
+ALTER TABLE clients ADD COLUMN IF NOT EXISTS investor_id BIGINT REFERENCES investors(id) ON DELETE CASCADE;
+
+-- إضافة حقل كود القرض
+ALTER TABLE clients ADD COLUMN IF NOT EXISTS loan_code VARCHAR(5);
+
 -- إنشاء فهرس لحقل كود المعاملة
 CREATE INDEX IF NOT EXISTS idx_clients_transaction_code ON clients(transaction_code);
+
+-- إنشاء فهرس لحقل معرف المستثمر
+CREATE INDEX IF NOT EXISTS idx_clients_investor_id ON clients(investor_id);
+
+-- إنشاء فهرس لحقل كود القرض
+CREATE INDEX IF NOT EXISTS idx_clients_loan_code ON clients(loan_code);
 
 -- إضافة تعليقات على الجداول
 COMMENT ON TABLE clients IS 'جدول العملاء مع تفاصيل القروض والمدفوعات';

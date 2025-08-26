@@ -1,6 +1,19 @@
 import { useConfirmationContext } from '../components/ConfirmationProvider'
 
 // Helper functions for common confirmation patterns
+export const ConfirmationHelpers = {
+  // تأكيد حذف عنصر واحد
+  async deleteItem(itemName: string, amount?: number): Promise<boolean> {
+    let message = `هل أنت متأكد من حذف ${itemName}؟`
+    
+    if (amount !== undefined) {
+      message += `\nالمبلغ: ${amount.toLocaleString()} د.ك`
+    }
+    
+    return false // Deprecated - use ConfirmationProvider instead
+  }
+}
+
 export const createDeleteConfirm = (showConfirm: ReturnType<typeof useConfirmationContext>['showConfirm']) => {
   return {
     // تأكيد حذف عنصر واحد

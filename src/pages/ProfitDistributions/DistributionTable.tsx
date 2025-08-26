@@ -1,4 +1,5 @@
 import React from 'react'
+import GlobalArabicNumberInput from '../../components/forms/GlobalArabicNumberInput'
 
 interface ProfitDistribution {
   investorId: number
@@ -68,13 +69,13 @@ const DistributionTable: React.FC<DistributionTableProps> = ({
                     <div className="flex-shrink-0 h-10 w-10">
                       <div className="h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center">
                         <span className="text-blue-600 font-medium text-sm">
-                          {distribution.investorName.charAt(0)}
+                          {distribution.investorName?.charAt(0) || '؟'}
                         </span>
                       </div>
                     </div>
                     <div className="mr-4">
                       <div className="text-sm font-medium text-gray-900">
-                        {distribution.investorName}
+                        {distribution.investorName || 'غير محدد'}
                       </div>
                       <div className="text-sm text-gray-500">
                         ID: {distribution.investorId}
@@ -93,10 +94,10 @@ const DistributionTable: React.FC<DistributionTableProps> = ({
                 </td>
                 
                 <td className="px-6 py-4 whitespace-nowrap">
-                  <input
+                  <GlobalArabicNumberInput
                     type="text"
                     value={distribution.distributedAmount}
-                    onChange={(e) => onDistributedAmountChange(distribution.investorId, e.target.value)}
+                    onChange={(value) => onDistributedAmountChange(distribution.investorId, value)}
                     placeholder="أدخل المبلغ"
                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
                   />
@@ -117,10 +118,10 @@ const DistributionTable: React.FC<DistributionTableProps> = ({
                 </td>
                 
                 <td className="px-6 py-4 whitespace-nowrap">
-                  <input
+                  <GlobalArabicNumberInput
                     type="text"
                     value={distribution.partnerAmount}
-                    onChange={(e) => onPartnerAmountChange(distribution.investorId, e.target.value)}
+                    onChange={(value) => onPartnerAmountChange(distribution.investorId, value)}
                     placeholder="أدخل المبلغ"
                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 text-sm"
                   />

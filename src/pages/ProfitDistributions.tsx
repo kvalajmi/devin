@@ -3,6 +3,7 @@
 
 import React from 'react'
 import { useProfitDistributions } from '../hooks/useProfitDistributions'
+import { useGlobalNotifications } from '../hooks/useGlobalNotifications'
 
 // استيراد المكونات المتخصصة
 import DistributionHeader from './ProfitDistributions/DistributionHeader'
@@ -28,14 +29,16 @@ const ProfitDistributions: React.FC = () => {
     handleExport,
     clearError
   } = useProfitDistributions()
+  
+  const { showNotification } = useGlobalNotifications()
 
   // معالج حفظ التوزيعات مع عرض النتيجة
   const handleSaveWithFeedback = async () => {
     const result = await handleSave()
     if (result.success) {
-      alert(result.message)
+      showNotification('success', `✅ ${result.message}`)
     } else {
-      alert(result.message)
+      showNotification('error', `❌ ${result.message}`)
     }
   }
 
@@ -43,9 +46,9 @@ const ProfitDistributions: React.FC = () => {
   const handleExportWithFeedback = () => {
     const result = handleExport()
     if (result.success) {
-      alert(result.message)
+      showNotification('success', `✅ ${result.message}`)
     } else {
-      alert(result.message)
+      showNotification('error', `❌ ${result.message}`)
     }
   }
 
@@ -62,7 +65,7 @@ const ProfitDistributions: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 py-8">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="w-full px-4 sm:px-6 lg:px-8">
         
         {/* رأس الصفحة */}
         <DistributionHeader 
@@ -109,33 +112,35 @@ const ProfitDistributions: React.FC = () => {
         </div>
 
         {/* إحصائيات سريعة */}
-        {distributions.length > 0 && (
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-            <div className="bg-white rounded-lg shadow-sm p-4">
-              <div className="text-sm text-gray-500">إجمالي المتاح للتوزيع</div>
-              <div className="text-2xl font-bold text-green-600">
-                {stats.totalAvailable.toLocaleString()} د.ك
+        {distributions.length > 0 && stats && (
+          <div className="w-full max-w-none">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+              <div className="bg-white rounded-lg shadow-sm p-4">
+                <div className="text-sm text-gray-500">إجمالي المتاح للتوزيع</div>
+                <div className="text-2xl font-bold text-green-600">
+                  {(stats.totalAvailableProfit || 0).toLocaleString()} د.ك
+                </div>
               </div>
-            </div>
-            
-            <div className="bg-white rounded-lg shadow-sm p-4">
-              <div className="text-sm text-gray-500">إجمالي الموزع</div>
-              <div className="text-2xl font-bold text-blue-600">
-                {stats.totalDistributed.toLocaleString()} د.ك
+              
+              <div className="bg-white rounded-lg shadow-sm p-4">
+                <div className="text-sm text-gray-500">إجمالي الموزع</div>
+                <div className="text-2xl font-bold text-blue-600">
+                  {(stats.totalDistributedAmount || 0).toLocaleString()} د.ك
+                </div>
               </div>
-            </div>
-            
-            <div className="bg-white rounded-lg shadow-sm p-4">
-              <div className="text-sm text-gray-500">نسبة التوزيع</div>
-              <div className="text-2xl font-bold text-purple-600">
-                {stats.distributionPercentage.toFixed(1)}%
+              
+              <div className="bg-white rounded-lg shadow-sm p-4">
+                <div className="text-sm text-gray-500">نسبة التوزيع</div>
+                <div className="text-2xl font-bold text-purple-600">
+                  {(stats.distributionPercentage || 0).toFixed(1)}%
+                </div>
               </div>
-            </div>
-            
-            <div className="bg-white rounded-lg shadow-sm p-4">
-              <div className="text-sm text-gray-500">المتبقي للتوزيع</div>
-              <div className="text-2xl font-bold text-orange-600">
-                {stats.remainingToDistribute.toLocaleString()} د.ك
+              
+              <div className="bg-white rounded-lg shadow-sm p-4">
+                <div className="text-sm text-gray-500">المتبقي للتوزيع</div>
+                <div className="text-2xl font-bold text-orange-600">
+                  {(stats.remainingProfit || 0).toLocaleString()} د.ك
+                </div>
               </div>
             </div>
           </div>

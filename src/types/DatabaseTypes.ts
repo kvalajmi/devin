@@ -19,6 +19,8 @@ export interface Client {
   totalPaid: number
   totalRemaining: number
   transaction_code?: string // كود المعاملة (مثل k10001-1)
+  loan_code?: string // كود القرض (5 أرقام مثل 00001)
+  investor_id?: number // معرف المستثمر
   job?: string
   address?: string
   governorate?: string

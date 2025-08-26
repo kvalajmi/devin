@@ -1,223 +1,100 @@
 import { DatabaseStore } from '../../types/DatabaseTypes'
+import { DatabaseCRUDOperations } from './DatabaseCRUDOperations'
+import { DatabaseQueryOperations } from './DatabaseQueryOperations'
+import { DatabaseBatchOperations } from './DatabaseBatchOperations'
 
 /**
- * العمليات الأساسية لقاعدة البيانات المحلية
+ * العمليات الأساسية لقاعدة البيانات المحلية - واجهة موحدة
+ * تم تقسيم الملف الأصلي إلى خدمات متخصصة حسب القاعدة الذهبية
  */
 export class DatabaseOperations {
-  /**
-   * إضافة عنصر إلى المخزن
-   */
   static async addItem<T>(
     db: IDBDatabase, 
     storeName: DatabaseStore, 
     item: Omit<T, 'id'>
   ): Promise<number> {
-    return new Promise((resolve, reject) => {
-      const transaction = db.transaction([storeName], 'readwrite')
-      const store = transaction.objectStore(storeName)
-      const request = store.add(item)
-
-      request.onsuccess = () => {
-        console.log(`✅ تم إضافة عنصر جديد إلى ${storeName}`)
-        resolve(request.result as number)
-      }
-
-      request.onerror = () => {
-        console.error(`❌ فشل في إضافة عنصر إلى ${storeName}`)
-        reject(new Error(`فشل في إضافة العنصر إلى ${storeName}`))
-      }
-    })
+    return DatabaseCRUDOperations.addItem(db, storeName, item)
   }
 
-  /**
-   * الحصول على عنصر بالمعرف
-   */
   static async getItem<T>(
     db: IDBDatabase, 
     storeName: DatabaseStore, 
     id: number
   ): Promise<T | null> {
-    return new Promise((resolve, reject) => {
-      const transaction = db.transaction([storeName], 'readonly')
-      const store = transaction.objectStore(storeName)
-      const request = store.get(id)
-
-      request.onsuccess = () => {
-        resolve(request.result || null)
-      }
-
-      request.onerror = () => {
-        reject(new Error(`فشل في جلب العنصر من ${storeName}`))
-      }
-    })
+    return DatabaseCRUDOperations.getItem(db, storeName, id)
   }
 
-  /**
-   * الحصول على جميع العناصر
-   */
   static async getAllItems<T>(
     db: IDBDatabase, 
     storeName: DatabaseStore
   ): Promise<T[]> {
-    return new Promise((resolve, reject) => {
-      const transaction = db.transaction([storeName], 'readonly')
-      const store = transaction.objectStore(storeName)
-      const request = store.getAll()
-
-      request.onsuccess = () => {
-        resolve(request.result || [])
-      }
-
-      request.onerror = () => {
-        reject(new Error(`فشل في جلب العناصر من ${storeName}`))
-      }
-    })
+    return DatabaseCRUDOperations.getAllItems(db, storeName)
   }
 
-  /**
-   * تحديث عنصر
-   */
   static async updateItem<T>(
     db: IDBDatabase, 
     storeName: DatabaseStore, 
     item: T
   ): Promise<void> {
-    return new Promise((resolve, reject) => {
-      const transaction = db.transaction([storeName], 'readwrite')
-      const store = transaction.objectStore(storeName)
-      const request = store.put(item)
-
-      request.onsuccess = () => {
-        console.log(`✅ تم تحديث عنصر في ${storeName}`)
-        resolve()
-      }
-
-      request.onerror = () => {
-        console.error(`❌ فشل في تحديث عنصر في ${storeName}`)
-        reject(new Error(`فشل في تحديث العنصر في ${storeName}`))
-      }
-    })
+    return DatabaseCRUDOperations.updateItem(db, storeName, item)
   }
 
-  /**
-   * حذف عنصر
-   */
   static async deleteItem(
     db: IDBDatabase, 
     storeName: DatabaseStore, 
     id: number
   ): Promise<void> {
-    return new Promise((resolve, reject) => {
-      const transaction = db.transaction([storeName], 'readwrite')
-      const store = transaction.objectStore(storeName)
-      const request = store.delete(id)
-
-      request.onsuccess = () => {
-        console.log(`✅ تم حذف عنصر من ${storeName}`)
-        resolve()
-      }
-
-      request.onerror = () => {
-        console.error(`❌ فشل في حذف عنصر من ${storeName}`)
-        reject(new Error(`فشل في حذف العنصر من ${storeName}`))
-      }
-    })
+    return DatabaseCRUDOperations.deleteItem(db, storeName, id)
   }
 
-  /**
-   * البحث بالفهرس
-   */
   static async getItemsByIndex<T>(
     db: IDBDatabase, 
     storeName: DatabaseStore, 
     indexName: string, 
     value: any
   ): Promise<T[]> {
-    return new Promise((resolve, reject) => {
-      const transaction = db.transaction([storeName], 'readonly')
-      const store = transaction.objectStore(storeName)
-      const index = store.index(indexName)
-      const request = index.getAll(value)
-
-      request.onsuccess = () => {
-        resolve(request.result || [])
-      }
-
-      request.onerror = () => {
-        reject(new Error(`فشل في البحث في ${storeName} بالفهرس ${indexName}`))
-      }
-    })
+    return DatabaseQueryOperations.getItemsByIndex(db, storeName, indexName, value)
   }
 
-  /**
-   * عد العناصر في المخزن
-   */
   static async countItems(
     db: IDBDatabase, 
     storeName: DatabaseStore
   ): Promise<number> {
-    return new Promise((resolve, reject) => {
-      const transaction = db.transaction([storeName], 'readonly')
-      const store = transaction.objectStore(storeName)
-      const request = store.count()
-
-      request.onsuccess = () => {
-        resolve(request.result)
-      }
-
-      request.onerror = () => {
-        reject(new Error(`فشل في عد العناصر في ${storeName}`))
-      }
-    })
+    return DatabaseQueryOperations.countItems(db, storeName)
   }
 
-  /**
-   * البحث المتقدم بمعايير متعددة
-   */
   static async searchItems<T>(
     db: IDBDatabase, 
     storeName: DatabaseStore, 
     searchCriteria: (item: T) => boolean
   ): Promise<T[]> {
-    const allItems = await this.getAllItems<T>(db, storeName)
-    return allItems.filter(searchCriteria)
+    return DatabaseQueryOperations.searchItems(db, storeName, searchCriteria)
   }
 
-  /**
-   * تحديث متعدد
-   */
   static async updateMultipleItems<T>(
     db: IDBDatabase, 
     storeName: DatabaseStore, 
     items: T[]
   ): Promise<void> {
-    return new Promise((resolve, reject) => {
-      const transaction = db.transaction([storeName], 'readwrite')
-      const store = transaction.objectStore(storeName)
-      
-      let completedCount = 0
-      const totalItems = items.length
+    return DatabaseBatchOperations.updateMultipleItems(db, storeName, items)
+  }
 
-      if (totalItems === 0) {
-        resolve()
-        return
-      }
+  static async addMultipleItems<T>(
+    db: IDBDatabase, 
+    storeName: DatabaseStore, 
+    items: Omit<T, 'id'>[]
+  ): Promise<number[]> {
+    return DatabaseBatchOperations.addMultipleItems(db, storeName, items)
+  }
 
-      items.forEach(item => {
-        const request = store.put(item)
-        
-        request.onsuccess = () => {
-          completedCount++
-          if (completedCount === totalItems) {
-            console.log(`✅ تم تحديث ${totalItems} عنصر في ${storeName}`)
-            resolve()
-          }
-        }
-        
-        request.onerror = () => {
-          reject(new Error(`فشل في تحديث عنصر في ${storeName}`))
-        }
-      })
-    })
+  static async deleteMultipleItems(
+    db: IDBDatabase, 
+    storeName: DatabaseStore, 
+    ids: number[]
+  ): Promise<void> {
+    return DatabaseBatchOperations.deleteMultipleItems(db, storeName, ids)
   }
 }
+
+// تصدير الخدمات المتخصصة للاستخدام المباشر عند الحاجة
+export { DatabaseCRUDOperations, DatabaseQueryOperations, DatabaseBatchOperations }

@@ -1,6 +1,10 @@
 import React from 'react'
 import ExpensesTable from '../ExpensesTable'
 import LawyerFeesTable from '../LawyerFeesTable'
+import ExpenseFormModal from '../../../components/forms/ExpenseFormModal'
+import LawyerFeeFormModal from '../../../components/forms/LawyerFeeFormModal'
+import EditExpenseModal from '../../../components/forms/EditExpenseModal'
+import EditLawyerFeeModal from '../../../components/forms/EditLawyerFeeModal'
 import { useClientData } from '../context/ClientDataContext'
 
 interface ClientExpensesManagerProps {
@@ -77,8 +81,10 @@ const ClientExpensesManager: React.FC<ClientExpensesManagerProps> = () => {
     setEditingExpense(null)
   }
 
-  const handleDeleteExpense = (expenseId: number) => {
-    if (confirm('هل أنت متأكد من حذف هذا المصروف؟')) {
+  const handleDeleteExpense = async (expenseId: number) => {
+    const { ConfirmationHelpers } = await import('../../../utils/confirmation-helpers')
+    const confirmed = await ConfirmationHelpers.deleteItem('هذا المصروف')
+    if (confirmed) {
       deleteExpense(expenseId)
     }
   }
@@ -125,8 +131,10 @@ const ClientExpensesManager: React.FC<ClientExpensesManagerProps> = () => {
     setEditingLawyerFee(null)
   }
 
-  const handleDeleteLawyerFee = (feeId: number) => {
-    if (confirm('هل أنت متأكد من حذف أتعاب المحامي؟')) {
+  const handleDeleteLawyerFee = async (feeId: number) => {
+    const { ConfirmationHelpers } = await import('../../../utils/confirmation-helpers')
+    const confirmed = await ConfirmationHelpers.deleteItem('أتعاب المحامي')
+    if (confirmed) {
       deleteLawyerFee(feeId)
     }
   }
@@ -143,18 +151,9 @@ const ClientExpensesManager: React.FC<ClientExpensesManagerProps> = () => {
 
         <ExpensesTable
           expenses={expenses}
-          onAddExpense={handleAddExpense}
+          onAddExpense={() => setShowAddExpenseModal(true)}
           onEditExpense={handleEditExpense}
           onDeleteExpense={handleDeleteExpense}
-          showAddModal={showAddExpenseModal}
-          setShowAddModal={setShowAddExpenseModal}
-          showEditModal={showEditExpenseModal}
-          setShowEditModal={setShowEditExpenseModal}
-          editingExpense={editingExpense}
-          newExpense={newExpense}
-          setNewExpense={setNewExpense}
-          confirmEditExpense={confirmEditExpense}
-          cancelEditExpense={cancelEditExpense}
         />
       </div>
 
@@ -163,20 +162,45 @@ const ClientExpensesManager: React.FC<ClientExpensesManagerProps> = () => {
 
         <LawyerFeesTable
           lawyerFees={lawyerFees}
-          onAddLawyerFee={handleAddLawyerFee}
+          onAddLawyerFee={() => setShowAddLawyerFeeModal(true)}
           onEditLawyerFee={handleEditLawyerFee}
           onDeleteLawyerFee={handleDeleteLawyerFee}
-          showAddModal={showAddLawyerFeeModal}
-          setShowAddModal={setShowAddLawyerFeeModal}
-          showEditModal={showEditLawyerFeeModal}
-          setShowEditModal={setShowEditLawyerFeeModal}
-          editingLawyerFee={editingLawyerFee}
-          newLawyerFee={newLawyerFee}
-          setNewLawyerFee={setNewLawyerFee}
-          confirmEditLawyerFee={confirmEditLawyerFee}
-          cancelEditLawyerFee={cancelEditLawyerFee}
         />
       </div>
+
+      {/* نموذج إضافة مصروف */}
+      <ExpenseFormModal
+        isOpen={showAddExpenseModal}
+        newExpense={newExpense}
+        setNewExpense={setNewExpense}
+        onAddExpense={handleAddExpense}
+        onClose={() => setShowAddExpenseModal(false)}
+      />
+
+      {/* نموذج تعديل مصروف */}
+      <EditExpenseModal
+        isOpen={showEditExpenseModal}
+        expense={editingExpense}
+        onSave={confirmEditExpense}
+        onClose={cancelEditExpense}
+      />
+
+      {/* نموذج إضافة أتعاب محامي */}
+      <LawyerFeeFormModal
+        isOpen={showAddLawyerFeeModal}
+        newLawyerFee={newLawyerFee}
+        setNewLawyerFee={setNewLawyerFee}
+        onAddLawyerFee={handleAddLawyerFee}
+        onClose={() => setShowAddLawyerFeeModal(false)}
+      />
+
+      {/* نموذج تعديل أتعاب محامي */}
+      <EditLawyerFeeModal
+        isOpen={showEditLawyerFeeModal}
+        lawyerFee={editingLawyerFee}
+        onSave={confirmEditLawyerFee}
+        onClose={cancelEditLawyerFee}
+      />
     </div>
   )
 }

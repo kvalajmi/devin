@@ -1,6 +1,7 @@
 import React from 'react'
 import { useConfirmationContext } from '../../components/ConfirmationProvider'
 import { createDeleteConfirm } from '../../utils/confirmation-helpers'
+import { formatDateTime } from '../Investors/utils/formatters'
 import styles from './Tables.module.css'
 
 interface LawyerFee {
@@ -17,15 +18,6 @@ interface LawyerFeesTableProps {
   onEditLawyerFee: (feeId: number) => void
   onDeleteLawyerFee: (feeId: number) => void
   onAddLawyerFee: () => void
-  showAddModal: boolean
-  setShowAddModal: (show: boolean) => void
-  showEditModal: boolean
-  setShowEditModal: (show: boolean) => void
-  editingLawyerFee: LawyerFee | null
-  newLawyerFee: { amount: string; date: string; description: string }
-  setNewLawyerFee: (fee: { amount: string; date: string; description: string }) => void
-  confirmEditLawyerFee: (amount: number, description?: string) => void
-  cancelEditLawyerFee: () => void
 }
 
 /**
@@ -35,16 +27,7 @@ const LawyerFeesTable: React.FC<LawyerFeesTableProps> = ({
   lawyerFees,
   onEditLawyerFee,
   onDeleteLawyerFee,
-  onAddLawyerFee,
-  showAddModal,
-  setShowAddModal,
-  showEditModal,
-  setShowEditModal,
-  editingLawyerFee,
-  newLawyerFee,
-  setNewLawyerFee,
-  confirmEditLawyerFee,
-  cancelEditLawyerFee
+  onAddLawyerFee
 }) => {
   const { showConfirm } = useConfirmationContext()
   const deleteConfirm = createDeleteConfirm(showConfirm)
@@ -102,13 +85,7 @@ const LawyerFeesTable: React.FC<LawyerFeesTableProps> = ({
                   <td className={`${styles.tableCell} ${styles.userCell}`}>
                     <div className={styles.userName}>{fee.entryUser}</div>
                     <div className={styles.userDateTime}>
-                      {new Date(fee.entryDateTime).toLocaleString('ar-SA', {
-                        year: 'numeric',
-                        month: 'short',
-                        day: 'numeric',
-                        hour: '2-digit',
-                        minute: '2-digit'
-                      })}
+                      {formatDateTime(fee.entryDateTime)}
                     </div>
                   </td>
                   <td className={styles.tableCell}>{fee.description}</td>

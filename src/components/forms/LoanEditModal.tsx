@@ -3,6 +3,8 @@ import { Client } from '../../types/DatabaseTypes'
 import ArabicNumberInput from './ArabicNumberInput'
 import ArabicDateInput from './ArabicDateInput'
 import LoanBasicInfoSection from './LoanEditModal/LoanBasicInfoSection'
+import { LoanCodeValidator } from '../../services/validation/LoanCodeValidator'
+import { useGlobalNotifications } from '../../hooks/useGlobalNotifications'
 
 interface LoanEditModalProps {
   isOpen: boolean
@@ -20,6 +22,7 @@ const LoanEditModal: React.FC<LoanEditModalProps> = ({
   onSave,
   onCancel
 }) => {
+  const { showNotification } = useGlobalNotifications()
   const [formData, setFormData] = useState<Partial<Client>>({
     loanAmount: client?.loanAmount || 0,
     profit: client?.profit || 0,
@@ -28,7 +31,8 @@ const LoanEditModal: React.FC<LoanEditModalProps> = ({
     guarantee: client?.guarantee || '',
     fundingDate: client?.fundingDate || '',
     firstInstallmentDate: client?.firstInstallmentDate || '',
-    pensionDate: client?.pensionDate || 0
+    pensionDate: client?.pensionDate || 0,
+    loan_code: client?.loan_code || ''
   })
 
   // تحديث formData عند تغيير client
@@ -42,7 +46,8 @@ const LoanEditModal: React.FC<LoanEditModalProps> = ({
         guarantee: client.guarantee || '',
         fundingDate: client.fundingDate || '',
         firstInstallmentDate: client.firstInstallmentDate || '',
-        pensionDate: client.pensionDate || 0
+        pensionDate: client.pensionDate || 0,
+        loan_code: client.loan_code || ''
       })
     }
   }, [client])
@@ -65,16 +70,34 @@ const LoanEditModal: React.FC<LoanEditModalProps> = ({
         guarantee: client.guarantee || '',
         fundingDate: client.fundingDate || '',
         firstInstallmentDate: client.firstInstallmentDate || '',
-        pensionDate: client.pensionDate || 0
+        pensionDate: client.pensionDate || 0,
+        loan_code: client.loan_code || ''
       })
     }
   }, [isOpen, client])
 
   if (!isOpen || !client) return null
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    onSave(formData)
+    
+    if (formData.loan_code) {
+      const validation = await LoanCodeValidator.validateLoanCodeUniqueness(
+        formData.loan_code, 
+        client?.id
+      )
+      if (!validation.isValid) {
+        showNotification('error', `❌ ${validation.message}`)
+        return
+      }
+    }
+    
+    try {
+      await onSave(formData)
+      showNotification('success', '✅ تم حفظ بيانات القرض بنجاح')
+    } catch (error) {
+      showNotification('error', '❌ حدث خطأ أثناء حفظ البيانات')
+    }
   }
 
   const handleInputChange = (field: keyof Client, value: string | number) => {
@@ -96,6 +119,26 @@ const LoanEditModal: React.FC<LoanEditModalProps> = ({
               formData={formData} 
               onInputChange={handleInputChange} 
             />
+
+            {/* كود القرض */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">كود القرض</label>
+              <div className="flex items-center space-x-2 space-x-reverse">
+                <span className="text-lg font-bold text-blue-600">K</span>
+                <input
+                  type="text"
+                  value={formData.loan_code || ''}
+                  onChange={(e) => {
+                    const value = e.target.value.replace(/\D/g, '').slice(0, 5)
+                    handleInputChange('loan_code', value.padStart(5, '0'))
+                  }}
+                  className="w-32 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent text-center font-mono"
+                  placeholder="00001"
+                  maxLength={5}
+                />
+              </div>
+              <p className="text-xs text-gray-500 mt-1">سيتم عرضه كـ: K {(formData.loan_code || '00000').padStart(5, '0')}</p>
+            </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>

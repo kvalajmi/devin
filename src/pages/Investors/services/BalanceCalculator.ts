@@ -45,9 +45,7 @@ export class BalanceCalculator {
       // 1. التمويل الفعلي
       const actualFunding = fundingRecords.reduce((sum, record) => sum + (record.amount || 0), 0)
 
-      // 2. العملاء التابعين لهذا المستثمر (مؤقتاً سنأخذ جميع العملاء)
-      // TODO: إضافة ربط العملاء بالمستثمرين في قاعدة البيانات
-      const investorClients = clients // مؤقتاً جميع العملاء
+      const investorClients = clients.filter(client => client.investor_id === investorId)
       const clientIds = investorClients.map(client => client.id)
 
       // 3. إجمالي التحصيل (المدفوعات للعملاء التابعين لهذا المستثمر)

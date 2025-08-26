@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { Client } from '../utils/database'
 import { SupabaseDatabase } from '../utils/supabase-simple'
+import { ClientDataConverter } from './InvestorTransactions/ClientDataConverter'
 
-// استيراد المكونات الجديدة
 import InvestorHeader from './InvestorTransactions/InvestorHeader'
 import ClientsSearch from './InvestorTransactions/ClientsSearch'
 import ClientsTable from './InvestorTransactions/ClientsTable'
@@ -28,17 +28,41 @@ const InvestorTransactions: React.FC = () => {
   const navigate = useNavigate()
   const { id: investorId } = useParams<{ id: string }>()
   
-  // بيانات المستثمر (مؤقتة)
-  const [investor] = useState<Investor>({
-    id: 1,
-    investorName: 'خالد سعد الطويل',
-    partnerName: 'شركة هارموني بلس',
-    partnershipType: 'نسبة',
-    investorPercentage: 50,
-    partnerPercentage: 50,
-    civilId: '296100601597',
-    joinDate: '2022-06-07'
-  })
+  // بيانات المستثمر (ديناميكية)
+  const [investor, setInvestor] = useState<Investor | null>(null)
+  const [isLoadingInvestor, setIsLoadingInvestor] = useState(true)
+
+  useEffect(() => {
+    const fetchInvestor = async () => {
+      if (!investorId) return
+      
+      try {
+        setIsLoadingInvestor(true)
+        const investors = await SupabaseDatabase.getInvestors()
+        const foundInvestor = investors.find(inv => inv.id === parseInt(investorId))
+        
+        if (foundInvestor) {
+          setInvestor({
+            id: foundInvestor.id,
+            investorName: foundInvestor.investor_name,
+            partnerName: foundInvestor.partner_name,
+            partnershipType: foundInvestor.partnership_type,
+            investorPercentage: foundInvestor.investor_percentage,
+            partnerPercentage: foundInvestor.partner_percentage,
+            civilId: foundInvestor.civil_id,
+            joinDate: foundInvestor.join_date
+          })
+        }
+      } catch (error) {
+        console.error('خطأ في جلب بيانات المستثمر:', error)
+        setError('حدث خطأ في تحميل بيانات المستثمر')
+      } finally {
+        setIsLoadingInvestor(false)
+      }
+    }
+
+    fetchInvestor()
+  }, [investorId])
 
   // حالات البيانات
   const [clients, setClients] = useState<Client[]>([])
@@ -58,9 +82,12 @@ const InvestorTransactions: React.FC = () => {
       console.log('🔄 تحديث بيانات العملاء...')
       const supabaseClients = await SupabaseDatabase.getClients()
       
-      // تحويل البيانات من تنسيق Supabase إلى تنسيق Client
-      const convertedClients = supabaseClients.map(supabaseClient => 
-        SupabaseDatabase.convertSupabaseToClient(supabaseClient)
+      const investorClients = supabaseClients.filter(client => 
+        client.investor_id === parseInt(investorId || '0')
+      )
+      
+      const convertedClients = investorClients.map(supabaseClient => 
+        ClientDataConverter.convertFromSupabase(supabaseClient)
       )
       
       console.log(`✅ تم تحميل ${convertedClients.length} عميل بنجاح`)
@@ -109,11 +136,22 @@ const InvestorTransactions: React.FC = () => {
     return () => window.removeEventListener('focus', handleFocus)
   }, [])
 
+  if (isLoadingInvestor || !investor) {
+    return (
+      <div className="space-y-4 sm:space-y-6 w-full max-w-none">
+        <div className="animate-pulse">
+          <div className="h-32 bg-gray-200 rounded-lg mb-6"></div>
+          <div className="h-64 bg-gray-200 rounded-lg"></div>
+        </div>
+      </div>
+    )
+  }
+
   // عرض الخطأ
   if (error) {
     return (
       <div className="space-y-4 sm:space-y-6 w-full max-w-none">
-        <InvestorHeader investor={investor} investorId={investorId} />
+        <InvestorHeader investor={investor || {} as Investor} investorId={investorId} />
         
         <main className="w-full px-4 sm:px-6 lg:px-8 py-6">
           <div className="bg-red-50 border border-red-200 rounded-lg p-6">
@@ -141,7 +179,7 @@ const InvestorTransactions: React.FC = () => {
   return (
     <div className="space-y-4 sm:space-y-6 w-full max-w-none">
       {/* رأس المستثمر */}
-      <InvestorHeader investor={investor} investorId={investorId} />
+      <InvestorHeader investor={investor || {} as Investor} investorId={investorId} />
 
       <main className="w-full px-4 sm:px-6 lg:px-8 py-6">
         {/* البحث */}

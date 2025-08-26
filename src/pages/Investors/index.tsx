@@ -6,7 +6,6 @@ import { useInvestorManagement } from '../../hooks/useInvestorManagement'
 import { Investor } from './types'
 
 // استيراد المكونات المتخصصة
-import AlertMessage from './components/AlertMessage'
 import InvestorPageHeader from './components/InvestorPageHeader'
 import InvestorStats from './components/InvestorStats'
 import AddInvestorForm from './AddInvestorForm'
@@ -25,7 +24,6 @@ const Investors: React.FC = () => {
     showAddForm,
     showDetailsForm,
     selectedInvestor,
-    alert,
     stats,
     addInvestor,
     deleteInvestor,
@@ -33,8 +31,7 @@ const Investors: React.FC = () => {
     openInvestorDetails,
     openInvestorTransactions,
     closeAllForms,
-    toggleAddForm,
-    closeAlert
+    toggleAddForm
   } = useInvestorManagement()
 
   // معالج تعديل المستثمر مع إغلاق النموذج
@@ -45,8 +42,6 @@ const Investors: React.FC = () => {
 
   return (
     <div className="space-y-4 sm:space-y-6 w-full max-w-none">
-      {/* Alert Messages */}
-      <AlertMessage alert={alert} onClose={closeAlert} />
 
       {/* Header - يظهر دائماً */}
       {!showDetailsForm && (

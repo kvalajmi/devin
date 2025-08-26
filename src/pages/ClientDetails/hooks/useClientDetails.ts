@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Client } from '../../../utils/database'
+import { Client } from '../../../types/DatabaseTypes'
 import { ClientDataService } from '../services/ClientDataService'
 
 interface NotificationState {

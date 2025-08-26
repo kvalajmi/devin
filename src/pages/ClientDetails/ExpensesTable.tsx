@@ -1,6 +1,7 @@
 import React from 'react'
 import { useConfirmationContext } from '../../components/ConfirmationProvider'
 import { createDeleteConfirm } from '../../utils/confirmation-helpers'
+import { formatDateTime } from '../Investors/utils/formatters'
 import styles from './Tables.module.css'
 
 interface Expense {
@@ -17,15 +18,6 @@ interface ExpensesTableProps {
   onEditExpense: (expenseId: number) => void
   onDeleteExpense: (expenseId: number) => void
   onAddExpense: () => void
-  showAddModal: boolean
-  setShowAddModal: (show: boolean) => void
-  showEditModal: boolean
-  setShowEditModal: (show: boolean) => void
-  editingExpense: Expense | null
-  newExpense: { amount: string; date: string; description: string }
-  setNewExpense: (expense: { amount: string; date: string; description: string }) => void
-  confirmEditExpense: (amount: number, description?: string) => void
-  cancelEditExpense: () => void
 }
 
 /**
@@ -35,16 +27,7 @@ const ExpensesTable: React.FC<ExpensesTableProps> = ({
   expenses,
   onEditExpense,
   onDeleteExpense,
-  onAddExpense,
-  showAddModal,
-  setShowAddModal,
-  showEditModal,
-  setShowEditModal,
-  editingExpense,
-  newExpense,
-  setNewExpense,
-  confirmEditExpense,
-  cancelEditExpense
+  onAddExpense
 }) => {
   const { showConfirm } = useConfirmationContext()
   const deleteConfirm = createDeleteConfirm(showConfirm)
@@ -102,13 +85,7 @@ const ExpensesTable: React.FC<ExpensesTableProps> = ({
                   <td className={`${styles.tableCell} ${styles.userCell}`}>
                     <div className={styles.userName}>{expense.entryUser}</div>
                     <div className={styles.userDateTime}>
-                      {new Date(expense.entryDateTime).toLocaleString('ar-SA', {
-                        year: 'numeric',
-                        month: 'short',
-                        day: 'numeric',
-                        hour: '2-digit',
-                        minute: '2-digit'
-                      })}
+                      {formatDateTime(expense.entryDateTime)}
                     </div>
                   </td>
                   <td className={styles.tableCell}>{expense.description}</td>

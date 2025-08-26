@@ -1,5 +1,6 @@
 import React from 'react'
 import { FileUtils } from './FileUtils'
+import { formatDate } from '../../../Investors/utils/formatters'
 
 interface AttachmentFile {
   id: number
@@ -169,7 +170,7 @@ const AttachmentsList: React.FC<AttachmentsListProps> = ({
                   </span>
                   <span className="text-xs text-gray-500">•</span>
                   <span className="text-xs text-gray-500">
-                    {new Date(attachment.uploadDate).toLocaleDateString('ar-SA')}
+                    {formatDate(attachment.uploadDate)}
                   </span>
                 </div>
               </div>

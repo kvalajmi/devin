@@ -5,8 +5,7 @@ import {
   useProfitDistributionsData,
   useProfitDistributionsActions,
   useProfitDistributionsOperations,
-  useProfitDistributionsStats,
-  ProfitDistribution
+  useProfitDistributionsStats
 } from './profit-distributions'
 
 /**
