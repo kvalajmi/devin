@@ -4,6 +4,7 @@ import ArabicNumberInput from './ArabicNumberInput'
 import ArabicDateInput from './ArabicDateInput'
 import LoanBasicInfoSection from './LoanEditModal/LoanBasicInfoSection'
 import { LoanCodeValidator } from '../../services/validation/LoanCodeValidator'
+import { useGlobalNotifications } from '../../hooks/useGlobalNotifications'
 
 interface LoanEditModalProps {
   isOpen: boolean
@@ -21,6 +22,7 @@ const LoanEditModal: React.FC<LoanEditModalProps> = ({
   onSave,
   onCancel
 }) => {
+  const { showNotification } = useGlobalNotifications()
   const [formData, setFormData] = useState<Partial<Client>>({
     loanAmount: client?.loanAmount || 0,
     profit: client?.profit || 0,
@@ -85,16 +87,16 @@ const LoanEditModal: React.FC<LoanEditModalProps> = ({
         client?.id
       )
       if (!validation.isValid) {
-        alert(`❌ ${validation.message}`)
+        showNotification('error', `❌ ${validation.message}`)
         return
       }
     }
     
     try {
       await onSave(formData)
-      alert('✅ تم حفظ بيانات القرض بنجاح')
+      showNotification('success', '✅ تم حفظ بيانات القرض بنجاح')
     } catch (error) {
-      alert('❌ حدث خطأ أثناء حفظ البيانات')
+      showNotification('error', '❌ حدث خطأ أثناء حفظ البيانات')
     }
   }
 
