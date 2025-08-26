@@ -81,8 +81,10 @@ const ClientExpensesManager: React.FC<ClientExpensesManagerProps> = () => {
     setEditingExpense(null)
   }
 
-  const handleDeleteExpense = (expenseId: number) => {
-    if (confirm('هل أنت متأكد من حذف هذا المصروف؟')) {
+  const handleDeleteExpense = async (expenseId: number) => {
+    const { ConfirmationHelpers } = await import('../../../utils/confirmation-helpers')
+    const confirmed = await ConfirmationHelpers.deleteItem('هذا المصروف')
+    if (confirmed) {
       deleteExpense(expenseId)
     }
   }
@@ -129,8 +131,10 @@ const ClientExpensesManager: React.FC<ClientExpensesManagerProps> = () => {
     setEditingLawyerFee(null)
   }
 
-  const handleDeleteLawyerFee = (feeId: number) => {
-    if (confirm('هل أنت متأكد من حذف أتعاب المحامي؟')) {
+  const handleDeleteLawyerFee = async (feeId: number) => {
+    const { ConfirmationHelpers } = await import('../../../utils/confirmation-helpers')
+    const confirmed = await ConfirmationHelpers.deleteItem('أتعاب المحامي')
+    if (confirmed) {
       deleteLawyerFee(feeId)
     }
   }

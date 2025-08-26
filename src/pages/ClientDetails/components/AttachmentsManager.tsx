@@ -122,7 +122,9 @@ const AttachmentsManager: React.FC<AttachmentsManagerProps> = ({
   const handleDeleteAttachment = async (attachmentId: number) => {
     if (!client) return
 
-    if (!confirm('هل أنت متأكد من حذف هذا المرفق؟')) return
+    const { ConfirmationHelpers } = await import('../../../utils/confirmation-helpers')
+    const confirmed = await ConfirmationHelpers.deleteItem('هذا المرفق')
+    if (!confirmed) return
 
     try {
       // TODO: حذف من قاعدة البيانات

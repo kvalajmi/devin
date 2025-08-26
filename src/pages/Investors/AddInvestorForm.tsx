@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import GlobalArabicNumberInput from '../../components/forms/GlobalArabicNumberInput'
 import { Investor } from './types'
+import { CivilIdValidator } from '../../services/validation/CivilIdValidator'
+import { useGlobalNotifications } from '../../hooks/useGlobalNotifications'
 
 interface AddInvestorFormProps {
   onAdd: (investor: Omit<Investor, 'id'>) => void
@@ -8,6 +10,7 @@ interface AddInvestorFormProps {
 }
 
 const AddInvestorForm: React.FC<AddInvestorFormProps> = ({ onAdd, onCancel }) => {
+  const { showNotification } = useGlobalNotifications()
   const [newInvestor, setNewInvestor] = useState<Omit<Investor, 'id'>>({
     investorName: '',
     partnerName: '',
@@ -18,8 +21,20 @@ const AddInvestorForm: React.FC<AddInvestorFormProps> = ({ onAdd, onCancel }) =>
     joinDate: new Date().toISOString().split('T')[0]
   })
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    
+    if (!newInvestor.investorName || !newInvestor.civilId) {
+      showNotification('error', 'يرجى ملء جميع الحقول المطلوبة')
+      return
+    }
+
+    const civilIdValidation = await CivilIdValidator.validateUniqueness(newInvestor.civilId)
+    if (!civilIdValidation.isValid) {
+      showNotification('error', civilIdValidation.message)
+      return
+    }
+
     onAdd(newInvestor)
   }
 
@@ -80,7 +95,7 @@ const AddInvestorForm: React.FC<AddInvestorFormProps> = ({ onAdd, onCancel }) =>
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">الرقم المدني</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">الرقم المدني (12 رقم)</label>
             <GlobalArabicNumberInput
               type="text"
               value={newInvestor.civilId}
@@ -90,7 +105,7 @@ const AddInvestorForm: React.FC<AddInvestorFormProps> = ({ onAdd, onCancel }) =>
                 }
               }}
               className="input-field"
-              placeholder="أدخل الرقم المدني"
+              placeholder="أدخل الرقم المدني (12 رقم)"
             />
           </div>
 

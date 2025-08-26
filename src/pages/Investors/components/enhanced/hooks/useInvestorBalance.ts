@@ -43,6 +43,16 @@ export const useInvestorBalance = (investorId: number) => {
     }
   }, [investorId])
 
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (investorId) {
+        loadBalanceData()
+      }
+    }, 30000)
+
+    return () => clearInterval(interval)
+  }, [investorId])
+
   return {
     balanceData,
     isLoading,

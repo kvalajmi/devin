@@ -31,7 +31,7 @@ export class ClientStatsCalculations {
     const progressPercentage = totalAmount > 0 ? (totalPaid / totalAmount) * 100 : 0
 
     const profitRatio = (loanAmount + profit) > 0 ? profit / (loanAmount + profit) : 0
-    const profitRatioFromPaidAmount = profitRatio * (totalPaid / totalAmount) * 100
+    const profitRatioFromPaidAmount = profitRatio * 100
     const collectedProfit = totalPaid > loanAmount ? totalPaid - loanAmount : 0
     const collectedGrossProfit = collectedProfit // الربح الإجمالي المحصل قبل خصم المصروفات
     const collectedCapital = totalPaid - collectedProfit

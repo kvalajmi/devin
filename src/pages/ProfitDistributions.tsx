@@ -3,6 +3,7 @@
 
 import React from 'react'
 import { useProfitDistributions } from '../hooks/useProfitDistributions'
+import { useGlobalNotifications } from '../hooks/useGlobalNotifications'
 
 // استيراد المكونات المتخصصة
 import DistributionHeader from './ProfitDistributions/DistributionHeader'
@@ -28,14 +29,16 @@ const ProfitDistributions: React.FC = () => {
     handleExport,
     clearError
   } = useProfitDistributions()
+  
+  const { showNotification } = useGlobalNotifications()
 
   // معالج حفظ التوزيعات مع عرض النتيجة
   const handleSaveWithFeedback = async () => {
     const result = await handleSave()
     if (result.success) {
-      alert(`✅ ${result.message}`)
+      showNotification('success', `✅ ${result.message}`)
     } else {
-      alert(`❌ ${result.message}`)
+      showNotification('error', `❌ ${result.message}`)
     }
   }
 
@@ -43,9 +46,9 @@ const ProfitDistributions: React.FC = () => {
   const handleExportWithFeedback = () => {
     const result = handleExport()
     if (result.success) {
-      alert(`✅ ${result.message}`)
+      showNotification('success', `✅ ${result.message}`)
     } else {
-      alert(`❌ ${result.message}`)
+      showNotification('error', `❌ ${result.message}`)
     }
   }
 

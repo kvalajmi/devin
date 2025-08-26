@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { formatCurrency, getBalanceStatus } from '../../utils/formatters'
 import { useInvestorBalance } from './hooks/useInvestorBalance'
 import BalanceDetailsSection from './BalanceDetailsSection'
@@ -18,6 +18,15 @@ const InvestorCurrentBalanceCard: React.FC<InvestorCurrentBalanceCardProps> = ({
 }) => {
   const [showDetails, setShowDetails] = useState(false)
   const { balanceData, isLoading, error, refreshBalance } = useInvestorBalance(investorId)
+
+  useEffect(() => {
+    const handleBalanceUpdate = () => {
+      refreshBalance()
+    }
+
+    window.addEventListener('balanceUpdate', handleBalanceUpdate)
+    return () => window.removeEventListener('balanceUpdate', handleBalanceUpdate)
+  }, [refreshBalance])
 
   // استخدام دوال التنسيق الموحدة
   const balanceStatus = getBalanceStatus(balanceData?.currentBalance || 0)

@@ -1,6 +1,8 @@
 import React from 'react'
 import GlobalArabicNumberInput from '../../../components/forms/GlobalArabicNumberInput'
 import { Investor } from '../types'
+import { CivilIdValidator } from '../../../services/validation/CivilIdValidator'
+import { useGlobalNotifications } from '../../../hooks/useGlobalNotifications'
 
 interface InvestorBasicInfoFormProps {
   investor: Investor
@@ -20,6 +22,18 @@ const InvestorBasicInfoForm: React.FC<InvestorBasicInfoFormProps> = ({
   isLoading,
   onInputChange
 }) => {
+  const { showNotification } = useGlobalNotifications()
+
+  const handleInputChange = async (field: keyof Investor, value: string | number) => {
+    onInputChange(field, value)
+
+    if (field === 'civilId' && typeof value === 'string') {
+      const validation = await CivilIdValidator.validateUniqueness(value, investor.id)
+      if (!validation.isValid) {
+        showNotification('error', validation.message)
+      }
+    }
+  }
   return (
     <div className="space-y-4">
       <h3 className="text-lg font-medium text-gray-900 border-b pb-2">معلومات المستثمر</h3>
@@ -32,7 +46,7 @@ const InvestorBasicInfoForm: React.FC<InvestorBasicInfoFormProps> = ({
           <input
             type="text"
             value={formData.investorName || ''}
-            onChange={(e) => onInputChange('investorName', e.target.value)}
+            onChange={(e) => handleInputChange('investorName', e.target.value)}
             className="input-field"
             disabled={isLoading}
           />
@@ -50,12 +64,12 @@ const InvestorBasicInfoForm: React.FC<InvestorBasicInfoFormProps> = ({
             value={formData.civilId || ''}
             onChange={(value) => {
               if (/^\d*$/.test(value) && value.length <= 12) {
-                onInputChange('civilId', value);
+                handleInputChange('civilId', value);
               }
             }}
             className="input-field"
             disabled={isLoading}
-            placeholder="أدخل الرقم المدني"
+            placeholder="أدخل الرقم المدني (12 رقم)"
           />
         ) : (
           <p className="text-gray-900">{investor.civilId}</p>

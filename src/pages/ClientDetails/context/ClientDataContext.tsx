@@ -115,6 +115,11 @@ export const ClientDataProvider: React.FC<ClientDataProviderProps> = ({
   const deletePayment = (id: number) => {
     setPayments(prev => prev.filter(payment => payment.id !== id))
     onNotification('success', '✅ تم حذف الدفعة بنجاح!')
+    
+    import('../../../utils/balance-events').then(({ triggerBalanceUpdate, triggerProfitUpdate }) => {
+      triggerBalanceUpdate()
+      triggerProfitUpdate()
+    })
   }
 
   // دوال إدارة المصروفات
@@ -139,6 +144,11 @@ export const ClientDataProvider: React.FC<ClientDataProviderProps> = ({
   const deleteExpense = (id: number) => {
     setExpenses(prev => prev.filter(expense => expense.id !== id))
     onNotification('success', '✅ تم حذف المصروف بنجاح!')
+    
+    import('../../../utils/balance-events').then(({ triggerBalanceUpdate, triggerProfitUpdate }) => {
+      triggerBalanceUpdate()
+      triggerProfitUpdate()
+    })
   }
 
   // دوال إدارة أتعاب المحامي
@@ -163,6 +173,11 @@ export const ClientDataProvider: React.FC<ClientDataProviderProps> = ({
   const deleteLawyerFee = (id: number) => {
     setLawyerFees(prev => prev.filter(fee => fee.id !== id))
     onNotification('success', '✅ تم حذف أتعاب المحامي بنجاح!')
+    
+    import('../../../utils/balance-events').then(({ triggerBalanceUpdate, triggerProfitUpdate }) => {
+      triggerBalanceUpdate()
+      triggerProfitUpdate()
+    })
   }
 
   // الإحصائيات المحسوبة

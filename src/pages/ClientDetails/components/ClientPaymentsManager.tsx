@@ -64,8 +64,10 @@ const ClientPaymentsManager: React.FC<ClientPaymentsManagerProps> = () => {
     setEditingPayment(null)
   }
 
-  const handleDeletePayment = (paymentId: number) => {
-    if (confirm('هل أنت متأكد من حذف هذه الدفعة؟')) {
+  const handleDeletePayment = async (paymentId: number) => {
+    const { ConfirmationHelpers } = await import('../../../utils/confirmation-helpers')
+    const confirmed = await ConfirmationHelpers.deleteItem('هذه الدفعة')
+    if (confirmed) {
       deletePayment(paymentId)
     }
   }

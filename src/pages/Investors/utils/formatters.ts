@@ -40,12 +40,18 @@ export const formatPercentage = (percentage: number, decimals: number = 1): stri
  * تنسيق التاريخ بالتقويم الميلادي (DD/MM/YYYY) - أرقام إنجليزية فقط
  */
 export const formatDate = (dateString: string | Date): string => {
+  if (!dateString) return ''
   const date = typeof dateString === 'string' ? new Date(dateString) : dateString
-  return date.toLocaleDateString('en-GB', {
-    day: '2-digit',
-    month: '2-digit',
-    year: 'numeric'
-  })
+  
+  // التأكد من صحة التاريخ
+  if (isNaN(date.getTime())) return ''
+  
+  // تنسيق التاريخ بالأرقام الإنجليزية فقط
+  const day = date.getDate().toString().padStart(2, '0')
+  const month = (date.getMonth() + 1).toString().padStart(2, '0')
+  const year = date.getFullYear().toString()
+  
+  return `${day}/${month}/${year}`
 }
 
 /**
