@@ -1,5 +1,6 @@
 import { Client } from '../../../types/DatabaseTypes'
 import { SupabaseDatabase } from '../../../utils/supabase-simple'
+import { formatDate } from '../../../pages/Investors/utils/formatters'
 
 /**
  * خدمة إدارة بيانات العميل
@@ -158,8 +159,8 @@ export class ClientDataService {
       formattedTotalAmount: client.totalAmount?.toLocaleString('ar-KW') + ' د.ك',
       formattedTotalPaid: client.totalPaid?.toLocaleString('ar-KW') + ' د.ك',
       formattedTotalRemaining: client.totalRemaining?.toLocaleString('ar-KW') + ' د.ك',
-      formattedFundingDate: new Date(client.fundingDate).toLocaleDateString('ar-KW'),
-      formattedFirstInstallmentDate: new Date(client.firstInstallmentDate).toLocaleDateString('ar-KW')
+      formattedFundingDate: formatDate(client.fundingDate),
+      formattedFirstInstallmentDate: formatDate(client.firstInstallmentDate)
     }
   }
 }
